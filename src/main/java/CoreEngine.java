@@ -17,7 +17,7 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class CoreEngine {
-    private int program;
+    private ShaderProgram program;
     private int vboId;
     private int vaoId;
     private int fps;
@@ -54,27 +54,12 @@ public class CoreEngine {
         // Set the clear color
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-        program = glCreateProgram();
-        if (program == 0) {
-            System.err.println("Unable to create shader program");
-            System.exit(1);
-        }
+        this.program = new ShaderProgram();
 
-        int vertexShaderId = addShader(ResourceLoader.loadShader("shaders/vertex.glsl"), GL_VERTEX_SHADER);
-        int fragShaderId = addShader(ResourceLoader.loadShader("shaders/frag.glsl"), GL_FRAGMENT_SHADER);
+        int vertexShaderId = program.addVertexShader(ResourceLoader.loadShader("shaders/vertex.glsl"));
+        int fragShaderId = program.addFragShader(ResourceLoader.loadShader("shaders/frag.glsl"));
 
-        glLinkProgram(program);
-
-        if (glGetProgrami(program, GL_LINK_STATUS) == 0) {
-            System.err.println(glGetShaderInfoLog(program, 1024));
-            System.exit(1);
-        }
-
-        glValidateProgram(program);
-
-        if (glGetProgrami(program, GL_VALIDATE_STATUS) == 0) {
-            System.out.println(glGetShaderInfoLog(program, 1024));
-        }
+        program.compileShader();
 
         glDeleteShader(vertexShaderId);
         glDeleteShader(fragShaderId);
@@ -159,7 +144,7 @@ public class CoreEngine {
     private void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-        glUseProgram(program);
+        glUseProgram(program.getProgramId());
 
         glBindVertexArray(vaoId);
 
@@ -174,28 +159,11 @@ public class CoreEngine {
         glfwPollEvents();
     }
 
-    private int addShader(String code, int type) {
-        int shaderId = glCreateShader(type);
-
-        if (shaderId == 0) {
-            System.err.println(this.getClass().getName() + " Shader creation failed");
-            System.exit(1);
-        }
-
-        glShaderSource(shaderId, code);
-        glCompileShader(shaderId);
-
-        if (glGetShaderi(shaderId, GL_COMPILE_STATUS) == 0) {
-            System.err.println(this.getClass().getName() + " " + glGetShaderInfoLog(shaderId, 1024));
-            System.exit(1);
-        }
-
-        System.out.println("attaching shaderid: " + shaderId + "to progrma: " + program);
-        glAttachShader(program, shaderId);
-        return shaderId;
-    }
-
     public void setFps(int fps) {
         this.fps = fps;
+    }
+
+    public void init() {
+
     }
 }

@@ -6,7 +6,7 @@ public class Game {
     }
 
     public void init() {
-//        engine.init();
+        engine.init();
     }
     public void launch() { engine.start(); }
 

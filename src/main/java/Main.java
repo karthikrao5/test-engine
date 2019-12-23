@@ -1,8 +1,9 @@
 public class Main {
 
     public static void main(String[] args) {
-        CoreEngine engine = new CoreEngine();
-        engine.createWindow(1280, 720);
-        engine.start();
+        Game game = new Game();
+        game.getEngine().createWindow(1280, 720);
+        game.init();
+        game.launch();
     }
 }
