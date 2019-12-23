@@ -82,6 +82,10 @@ public class Window {
         getDeviceProperties();
     }
 
+    public void render() {
+        glfwSwapBuffers(window);
+    }
+
     public void destroy() {
         // Free the window callbacks and destroy the window
         glfwFreeCallbacks(window);

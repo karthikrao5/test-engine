@@ -17,13 +17,11 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class CoreEngine {
-    private ShaderProgram program;
-    private int vboId;
-    private int vaoId;
     private int fps;
     private float framerate = 200;
     private float frameTime = 1.0f / framerate;
     private boolean isRunning;
+    private RenderEngine renderEngine;
 
     public void createWindow(int width, int height) {
         System.out.println("LWJGL version: " + Version.getVersion() + "!");
@@ -33,6 +31,8 @@ public class CoreEngine {
         GLFWErrorCallback.createPrint(System.err).set();
 
         Window.getInstance().create(width, height);
+
+        renderEngine = new RenderEngine();
     }
 
     public void start() {
@@ -53,36 +53,6 @@ public class CoreEngine {
 
         // Set the clear color
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
-        this.program = new ShaderProgram();
-
-        int vertexShaderId = program.addVertexShader(ResourceLoader.loadShader("shaders/vertex.glsl"));
-        int fragShaderId = program.addFragShader(ResourceLoader.loadShader("shaders/frag.glsl"));
-
-        program.compileShader();
-
-        glDeleteShader(vertexShaderId);
-        glDeleteShader(fragShaderId);
-
-        final float[] vertices = new float[]{
-                -0.5f, 0.0f, 0.0f,
-                0.5f, 0.0f, 0.0f,
-                0.0f, 0.5f, 0.0f
-        };
-
-        vaoId = glGenVertexArrays();
-        glBindVertexArray(vaoId);
-
-        FloatBuffer verticesBuff = BufferUtils.createFloatBuffer(vertices.length);
-        verticesBuff.put(vertices).flip();
-
-        vboId = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, vboId);
-
-        glBufferData(GL_ARRAY_BUFFER, verticesBuff, GL_STATIC_DRAW);
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, false,  0, 0);
-        glEnableVertexAttribArray(0);
 
         // Rendering Loop
         while (isRunning) {
@@ -142,18 +112,7 @@ public class CoreEngine {
     }
 
     private void render() {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
-
-        glUseProgram(program.getProgramId());
-
-        glBindVertexArray(vaoId);
-
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-
-        glUseProgram(0);
-
-        glfwSwapBuffers(Window.getInstance().getWindowId()); // swap the color buffers
-
+        renderEngine.render();
         // Poll for window events. The key callback above will only be
         // invoked during this call.
         glfwPollEvents();
