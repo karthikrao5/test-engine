@@ -1,3 +1,5 @@
+package com.pantheon.kernel;
+
 public class Game {
     protected CoreEngine engine;
 

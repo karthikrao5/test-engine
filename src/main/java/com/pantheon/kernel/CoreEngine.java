@@ -1,3 +1,6 @@
+package com.pantheon.kernel;
+
+import com.pantheon.utils.Constants;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 

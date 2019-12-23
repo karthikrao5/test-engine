@@ -1,3 +1,6 @@
+package com.pantheon.shaders;
+
+import com.pantheon.utils.ResourceLoader;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;

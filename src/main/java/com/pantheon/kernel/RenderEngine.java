@@ -1,3 +1,7 @@
+package com.pantheon.kernel;
+
+import com.pantheon.shaders.Triangle;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class RenderEngine {

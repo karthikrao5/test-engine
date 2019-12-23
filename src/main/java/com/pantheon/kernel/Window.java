@@ -1,3 +1,5 @@
+package com.pantheon.kernel;
+
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.MemoryStack;
