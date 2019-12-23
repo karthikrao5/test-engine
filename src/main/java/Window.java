@@ -23,7 +23,7 @@ public class Window {
     }
 
     public void create(int width, int height) {
-// Initialize GLFW. Most GLFW functions will not work before doing this.
+        // Initialize GLFW. Most GLFW functions will not work before doing this.
         if (!glfwInit())
             throw new IllegalStateException("Unable to initialize GLFW");
 
@@ -36,7 +36,7 @@ public class Window {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
         // Create the window
-        window = glfwCreateWindow(1280, 720, "Hello World!", NULL, NULL);
+        window = glfwCreateWindow(width, height, "Hello World!", NULL, NULL);
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
@@ -94,6 +94,9 @@ public class Window {
 
     public long getWindowId() {
         return window;
+    }
+    public boolean isCloseRequested() {
+        return glfwWindowShouldClose(window);
     }
 
     private void getDeviceProperties() {
