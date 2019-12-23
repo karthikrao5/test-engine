@@ -12,18 +12,17 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
-public class Triangle {
-    private ShaderProgram program;
+public class Triangle extends ShaderProgram {
     private int vboId;
     private int vaoId;
 
     public Triangle() {
-        this.program = new ShaderProgram();
+        super();
 
-        int vertexShaderId = program.addVertexShader(ResourceLoader.loadShader("shaders/vertex.glsl"));
-        int fragShaderId = program.addFragShader(ResourceLoader.loadShader("shaders/frag.glsl"));
+        int vertexShaderId = addVertexShader(ResourceLoader.loadShader("shaders/vertex.glsl"));
+        int fragShaderId = addFragShader(ResourceLoader.loadShader("shaders/frag.glsl"));
 
-        program.compileShader();
+        compileShader();
 
         glDeleteShader(vertexShaderId);
         glDeleteShader(fragShaderId);
@@ -50,7 +49,7 @@ public class Triangle {
     }
 
     public void draw() {
-        glUseProgram(program.getProgramId());
+        glUseProgram(getProgramId());
 
         glBindVertexArray(vaoId);
 

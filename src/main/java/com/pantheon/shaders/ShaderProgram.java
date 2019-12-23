@@ -2,7 +2,7 @@ package com.pantheon.shaders;
 
 import static org.lwjgl.opengl.GL20.*;
 
-public class ShaderProgram {
+public abstract class ShaderProgram {
     private int program;
 
     public ShaderProgram() {

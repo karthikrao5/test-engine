@@ -44,6 +44,8 @@ task appArgs {
 dependencies {
 	implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
+	compile group: 'org.joml', name: 'joml', version: '1.9.19'
+
 	implementation "org.lwjgl:lwjgl"
 	implementation "org.lwjgl:lwjgl-assimp"
 	implementation "org.lwjgl:lwjgl-bgfx"
