@@ -1,6 +1,6 @@
-package com.pantheon.buffers;
+package com.pantheon.core.buffers;
 
-import com.pantheon.models.Mesh;
+import com.pantheon.core.models.Mesh;
 
 public interface VBO {
     public void allocate(Mesh mesh);

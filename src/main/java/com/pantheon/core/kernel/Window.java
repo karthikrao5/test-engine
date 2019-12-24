@@ -1,4 +1,4 @@
-package com.pantheon.kernel;
+package com.pantheon.core.kernel;
 
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.*;

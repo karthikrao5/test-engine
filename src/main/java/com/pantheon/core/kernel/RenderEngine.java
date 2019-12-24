@@ -1,6 +1,6 @@
-package com.pantheon.kernel;
+package com.pantheon.core.kernel;
 
-import com.pantheon.shaders.Triangle;
+import com.pantheon.core.shaders.Triangle;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -20,5 +20,9 @@ public class RenderEngine {
 
         //swap buffers
         window.render();
+    }
+
+    public void cleanUp() {
+        triangle.cleanUp();
     }
 }

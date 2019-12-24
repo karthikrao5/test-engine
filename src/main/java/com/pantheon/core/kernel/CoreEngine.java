@@ -1,6 +1,6 @@
-package com.pantheon.kernel;
+package com.pantheon.core.kernel;
 
-import com.pantheon.utils.Constants;
+import com.pantheon.core.utils.Constants;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
@@ -89,6 +89,7 @@ public class CoreEngine {
     }
 
     private void cleanUp() {
+        renderEngine.cleanUp();
         Window.getInstance().destroy();
     }
 

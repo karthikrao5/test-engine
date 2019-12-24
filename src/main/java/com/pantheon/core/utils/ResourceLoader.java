@@ -1,4 +1,4 @@
-package com.pantheon.utils;
+package com.pantheon.core.utils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

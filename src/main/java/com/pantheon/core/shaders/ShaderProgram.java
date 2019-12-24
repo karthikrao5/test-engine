@@ -1,24 +1,49 @@
-package com.pantheon.shaders;
+package com.pantheon.core.shaders;
+
+import com.pantheon.core.utils.ResourceLoader;
 
 import static org.lwjgl.opengl.GL20.*;
 
 public abstract class ShaderProgram {
     private int program;
+    private int vertexId;
+    private int fragId;
 
-    public ShaderProgram() {
+    public ShaderProgram(String vertexShaderFile, String fragShaderFile) {
         program = glCreateProgram();
         if (program == 0) {
             System.err.println("Unable to create shader program");
             System.exit(1);
         }
+
+        this.vertexId = addShader(ResourceLoader.loadShader(vertexShaderFile), GL_VERTEX_SHADER);
+        this.fragId = addShader(ResourceLoader.loadShader(fragShaderFile), GL_FRAGMENT_SHADER);
+
+        compileShader();
     }
 
-    int addVertexShader(String shaderCode) {
-        return addShader(shaderCode, GL_VERTEX_SHADER);
+    public void start() {
+        glUseProgram(program);
     }
 
-    int addFragShader(String shaderCode) {
-        return addShader(shaderCode, GL_FRAGMENT_SHADER);
+    public void stop() {
+        glUseProgram(0);
+    }
+
+    public void cleanUp() {
+        stop();
+        glDetachShader(program, vertexId);
+        glDetachShader(program, fragId);
+
+        glDeleteShader(vertexId);
+        glDeleteShader(fragId);
+        glDeleteProgram(program);
+    }
+
+    protected abstract void bindAttributes();
+
+    protected void bindAttribute(int attribute, String variableName) {
+        glBindAttribLocation(program, attribute, variableName);
     }
 
     private int addShader(String code, int type) {
@@ -49,15 +74,11 @@ public abstract class ShaderProgram {
             System.exit(1);
         }
 
+        glValidateProgram(program);
         //TODO: figure out what this is for
-//        glValidateProgram(program);
 //        if (glGetProgrami(program, GL_VALIDATE_STATUS) == 0) {
 //            System.err.println(this.getClass().getName() + " " + glGetProgramInfoLog(program, 1024));
 //            System.exit(1);
 //        }
-    }
-
-    public int getProgramId() {
-        return this.program;
     }
 }

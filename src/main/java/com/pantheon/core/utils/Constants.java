@@ -1,4 +1,4 @@
-package com.pantheon.utils;
+package com.pantheon.core.utils;
 
 public class Constants {
 

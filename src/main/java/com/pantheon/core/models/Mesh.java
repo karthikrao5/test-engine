@@ -1,16 +1,16 @@
-package com.pantheon.models;
+package com.pantheon.core.models;
 
 import org.joml.Vector2f;
 
 public class Mesh {
-    private Vector2f[] vertices;
+    private float[] vertices;
     private int[] triangles;
 
-    public Vector2f[] getVertices() {
+    public float[] getVertices() {
         return vertices;
     }
 
-    public void setVertices(Vector2f[] vertices) {
+    public void setVertices(float[] vertices) {
         this.vertices = vertices;
     }
 

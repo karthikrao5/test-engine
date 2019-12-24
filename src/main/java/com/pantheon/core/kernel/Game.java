@@ -1,4 +1,4 @@
-package com.pantheon.kernel;
+package com.pantheon.core.kernel;
 
 public class Game {
     protected CoreEngine engine;
