@@ -15,6 +15,8 @@ public class Window {
     private static Window _instance = null;
 
     private long window;
+    private int width;
+    private int height;
 
     public static Window getInstance() {
         if (_instance == null) {
@@ -24,6 +26,8 @@ public class Window {
     }
 
     public void create(int width, int height) {
+        this.width = width;
+        this.height = height;
         // Initialize GLFW. Most GLFW functions will not work before doing this.
         if (!glfwInit())
             throw new IllegalStateException("Unable to initialize GLFW");
@@ -108,5 +112,21 @@ public class Window {
         System.out.println("Max Uniform Buffer Bindings: " + GL31.GL_MAX_UNIFORM_BUFFER_BINDINGS + " bytes");
         System.out.println("Max Uniform Block Size: " + GL31.GL_MAX_UNIFORM_BLOCK_SIZE + " bytes");
         System.out.println("Max SSBO Block Size: " + GL43.GL_MAX_SHADER_STORAGE_BLOCK_SIZE + " bytes");
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }

@@ -1,5 +1,6 @@
 package com.pantheon.core.renderer;
 
+import com.pantheon.core.kernel.Window;
 import com.pantheon.core.models.Entity;
 import com.pantheon.core.shaders.BoxShader;
 import com.pantheon.core.shaders.ShaderProgram;
@@ -15,6 +16,19 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 public class Renderer {
+
+    private static final float FOV = 70f;
+    private static final float NEAR_PLANE = 0.1f;
+    private static final float FAR_PLANE = 1000f;
+
+    private Matrix4f projectionMatrix;
+
+    public Renderer(BoxShader shader) {
+        createProjectionMatrix();
+        shader.start();
+        shader.loadProjectionMatrix(projectionMatrix);
+        shader.stop();
+    }
 
     public void render(Entity entity, BoxShader shader) {
         shader.start();
@@ -37,5 +51,22 @@ public class Renderer {
         glBindVertexArray(0);
 
         shader.stop();
+    }
+
+
+    private void createProjectionMatrix() {
+        float aspectRatio = (float) Window.getInstance().getWidth() / (float) Window.getInstance().getHeight();
+        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
+        float x_scale = y_scale / aspectRatio;
+
+        float frustum_length = FAR_PLANE - NEAR_PLANE;
+
+        projectionMatrix = new Matrix4f();
+        projectionMatrix.m00(x_scale);
+        projectionMatrix.m11(y_scale);
+        projectionMatrix.m22(-((FAR_PLANE + NEAR_PLANE) / frustum_length));
+        projectionMatrix.m23(-1);
+        projectionMatrix.m32(-((2 * NEAR_PLANE * FAR_PLANE) / frustum_length));
+        projectionMatrix.m33(0);
     }
 }

@@ -4,6 +4,7 @@ import org.joml.Matrix4f;
 
 public class BoxShader extends ShaderProgram {
     private int location_transformationMatrix;
+    private int location_projectionMatrix;
     public BoxShader() {
         super("vertex.glsl", "frag.glsl");
     }
@@ -16,11 +17,15 @@ public class BoxShader extends ShaderProgram {
 
     @Override
     protected void getAllUniformLocations() {
-        location_transformationMatrix = super.getUniformLocation("trans");
-        System.out.println("Location matrix code: " + location_transformationMatrix);
+        location_transformationMatrix = super.getUniformLocation("transformationMatrix");
+        location_projectionMatrix = super.getUniformLocation("projectionMatrix");
     }
 
     public void loadTransformationMatrix(Matrix4f matrix) {
         super.loadMatrix(location_transformationMatrix, matrix);
+    }
+
+    public void loadProjectionMatrix(Matrix4f matrix) {
+        super.loadMatrix(location_projectionMatrix, matrix);
     }
 }

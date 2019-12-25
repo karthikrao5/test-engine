@@ -6,11 +6,10 @@ import com.pantheon.core.models.Model;
 import com.pantheon.core.renderer.Renderer;
 import com.pantheon.core.shaders.BoxShader;
 import com.pantheon.core.utils.ResourceLoader;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 public class RenderEngine {
     private Window window;
@@ -21,7 +20,7 @@ public class RenderEngine {
     public RenderEngine() {
         window = Window.getInstance();
         boxShader = new BoxShader();
-        renderer = new Renderer();
+        renderer = new Renderer(boxShader);
 
         float[] vertices = new float[]{
                 -0.5f, 0.5f, 0.0f, //V0
@@ -49,13 +48,13 @@ public class RenderEngine {
         model.setTextCoords(textCoords);
         BufferModel bufferModel = new BufferModel(model);
 
-        entity = new Entity(bufferModel, new Vector3f(0,0,0), 0,0,0, 0.2f);
+        entity = new Entity(bufferModel, new Vector3f(0,0,-1), 0,0,0, 1);
     }
 
     public void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-        entity.move(new Vector3f(0.002f, 0, 0));
+        entity.move(new Vector3f(0, 0, -0.1f));
         entity.rotate(new Vector3f(0,1,0));
 
         renderer.render(entity, boxShader);
