@@ -1,6 +1,11 @@
 package com.pantheon.core.shaders;
 
 import com.pantheon.core.utils.ResourceLoader;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
+
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL20.*;
 
@@ -8,6 +13,7 @@ public abstract class ShaderProgram {
     private int program;
     private int vertexId;
     private int fragId;
+    private static FloatBuffer matBuffer = BufferUtils.createFloatBuffer(16);
 
     public ShaderProgram(String vertexShaderFile, String fragShaderFile) {
         program = glCreateProgram();
@@ -56,6 +62,16 @@ public abstract class ShaderProgram {
 
     protected void loadFloat(int location, float value) {
         glUniform1f(location, value);
+    }
+
+    protected void loadVector3f(int location, Vector3f vector) {
+        glUniform3f(location, vector.x, vector.y, vector.z);
+    }
+
+    protected void loadMatrix(int location, Matrix4f matrix) {
+        matrix.set(matBuffer);
+        matBuffer.flip();
+        glUniformMatrix4fv(location, false, matBuffer);
     }
 
     public void cleanUp() {
