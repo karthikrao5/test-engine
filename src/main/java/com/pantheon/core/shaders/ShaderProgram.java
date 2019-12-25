@@ -16,6 +16,8 @@ public abstract class ShaderProgram {
             System.exit(1);
         }
 
+        bindAttributes();
+
         this.vertexId = addShader(ResourceLoader.loadShader(vertexShaderFile), GL_VERTEX_SHADER);
         this.fragId = addShader(ResourceLoader.loadShader(fragShaderFile), GL_FRAGMENT_SHADER);
 
@@ -30,22 +32,11 @@ public abstract class ShaderProgram {
         glUseProgram(0);
     }
 
-    public void cleanUp() {
-        stop();
-        glDetachShader(program, vertexId);
-        glDetachShader(program, fragId);
-
-        glDeleteShader(vertexId);
-        glDeleteShader(fragId);
-        glDeleteProgram(program);
-    }
-
     protected abstract void bindAttributes();
 
     protected void bindAttribute(int attribute, String variableName) {
         glBindAttribLocation(program, attribute, variableName);
     }
-
 
     public void compileShader() {
         glLinkProgram(program);
@@ -61,6 +52,20 @@ public abstract class ShaderProgram {
 //            System.err.println(this.getClass().getName() + " " + glGetProgramInfoLog(program, 1024));
 //            System.exit(1);
 //        }
+    }
+
+    protected void loadFloat(int location, float value) {
+        glUniform1f(location, value);
+    }
+
+    public void cleanUp() {
+        stop();
+        glDetachShader(program, vertexId);
+        glDetachShader(program, fragId);
+
+        glDeleteShader(vertexId);
+        glDeleteShader(fragId);
+        glDeleteProgram(program);
     }
 
     private int addShader(String code, int type) {

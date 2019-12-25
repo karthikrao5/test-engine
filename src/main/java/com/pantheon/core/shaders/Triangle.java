@@ -2,6 +2,7 @@ package com.pantheon.core.shaders;
 
 import com.pantheon.core.buffers.BufferModel;
 import com.pantheon.core.models.Model;
+import com.pantheon.core.models.Texture;
 import com.pantheon.core.utils.ResourceLoader;
 
 public class Triangle extends ShaderProgram {
@@ -11,29 +12,31 @@ public class Triangle extends ShaderProgram {
         super("vertex.glsl", "frag.glsl");
 
         float[] vertices = new float[]{
-            -0.5f, 0.5f, 0.0f, //top left V0
-            -0.5f,-0.5f, 0.0f, //bottom left V1
-            0.5f, 0.5f, 0.0f, //top right V2
-            0.5f, -0.5f, 0.0f, //bottom right V3
+            -0.5f, 0.5f, 0.0f, //V0
+            0.5f, 0.5f, 0.0f, //V2
+            0.5f, -0.5f, 0.0f, //V2
+            -0.5f,-0.5f, 0.0f, //V3
         };
 
         int[] triangles = new int[] {
-                0,1,2,
-                2,1,3
+                0,1,3,
+                3,1,2
         };
 
         float[] textCoords = new float[] {
+                1f,0f,
                 0f,0f,
                 0f,1f,
-                1f,1f,
-                1f,0f
+                1f,1f
         };
 
         Model model = new Model();
         model.setTriangles(triangles);
         model.setVertices(vertices);
         model.setTextCoords(textCoords);
-        model.setTexture(ResourceLoader.importTextureFile("wall_right.png"));
+        Texture texture = ResourceLoader.importTextureFile("wall_mid.png");
+        texture.setTextCoords(textCoords);
+        model.setTexture(texture);
 
         buffer = new BufferModel(model);
     }

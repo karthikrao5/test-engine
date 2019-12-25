@@ -30,7 +30,7 @@ public class BufferModel {
 
         if (model.getTexture() != null) {
             textures.add(model.getTexture().getTextureId());
-            storeDataInAttribute(1, 2, model.getTextCoords());
+            storeDataInAttribute(1, 2, model.getTexture().getTextCoords());
         }
     }
 
