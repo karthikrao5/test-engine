@@ -4,7 +4,6 @@ package com.pantheon.core.models;
 public class Model {
     private float[] vertices;
     private int[] triangles;
-    private float[] textCoords;
     private Texture texture;
 
     public float[] getVertices() {
@@ -29,13 +28,5 @@ public class Model {
 
     public void setTexture(Texture texture) {
         this.texture = texture;
-    }
-
-    public float[] getTextCoords() {
-        return textCoords;
-    }
-
-    public void setTextCoords(float[] textCoords) {
-        this.textCoords = textCoords;
     }
 }

@@ -33,7 +33,6 @@ public class Triangle extends ShaderProgram {
         Model model = new Model();
         model.setTriangles(triangles);
         model.setVertices(vertices);
-        model.setTextCoords(textCoords);
         Texture texture = ResourceLoader.importTextureFile("wall_mid.png");
         texture.setTextCoords(textCoords);
         model.setTexture(texture);
