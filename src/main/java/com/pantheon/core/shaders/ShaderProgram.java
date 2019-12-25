@@ -40,6 +40,7 @@ public abstract class ShaderProgram {
     }
 
     protected abstract void bindAttributes();
+
     protected abstract void getAllUniformLocations();
 
     protected int getUniformLocation(String uniformName) {
@@ -75,8 +76,24 @@ public abstract class ShaderProgram {
     }
 
     protected void loadMatrix(int location, Matrix4f matrix) {
-        matrix.set(matBuffer);
-        matBuffer.flip();
+        float[] arr = new float[16];
+        arr[0]  = matrix.m00();
+        arr[1]  = matrix.m01();
+        arr[2]  = matrix.m02();
+        arr[3]  = matrix.m03();
+        arr[4]  = matrix.m10();
+        arr[5]  = matrix.m11();
+        arr[6]  = matrix.m12();
+        arr[7]  = matrix.m13();
+        arr[8]  = matrix.m20();
+        arr[9]  = matrix.m21();
+        arr[10] = matrix.m22();
+        arr[11] = matrix.m23();
+        arr[12] = matrix.m30();
+        arr[13] = matrix.m31();
+        arr[14] = matrix.m32();
+        arr[15] = matrix.m33();
+        matBuffer.put(arr).flip();
         glUniformMatrix4fv(location, false, matBuffer);
     }
 

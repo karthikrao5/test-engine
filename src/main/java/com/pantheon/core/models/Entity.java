@@ -28,7 +28,7 @@ public class Entity {
         this.rotZ += rotation.z;
     }
 
-    public BufferModel getModel() {
+    public BufferModel getBufferModel() {
         return model;
     }
 

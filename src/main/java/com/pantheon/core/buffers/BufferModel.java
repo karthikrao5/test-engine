@@ -88,4 +88,20 @@ public class BufferModel {
         glVertexAttribPointer(attributeNumber, size, GL_FLOAT, false,  0, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
+
+    public int getVaoId() {
+        return vaoId;
+    }
+
+    public void setVaoId(int vaoId) {
+        this.vaoId = vaoId;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
+    }
 }
