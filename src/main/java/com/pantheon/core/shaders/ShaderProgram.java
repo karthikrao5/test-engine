@@ -46,6 +46,23 @@ public abstract class ShaderProgram {
         glBindAttribLocation(program, attribute, variableName);
     }
 
+
+    public void compileShader() {
+        glLinkProgram(program);
+
+        if (glGetProgrami(program, GL_LINK_STATUS) == 0) {
+            System.out.println(this.getClass().getName() + " " + glGetProgramInfoLog(program, 1024));
+            System.exit(1);
+        }
+
+        glValidateProgram(program);
+        //TODO: figure out what this is for
+//        if (glGetProgrami(program, GL_VALIDATE_STATUS) == 0) {
+//            System.err.println(this.getClass().getName() + " " + glGetProgramInfoLog(program, 1024));
+//            System.exit(1);
+//        }
+    }
+
     private int addShader(String code, int type) {
         int shader = glCreateShader(type);
 
@@ -64,21 +81,5 @@ public abstract class ShaderProgram {
 
         glAttachShader(program, shader);
         return shader;
-    }
-
-    public void compileShader() {
-        glLinkProgram(program);
-
-        if (glGetProgrami(program, GL_LINK_STATUS) == 0) {
-            System.out.println(this.getClass().getName() + " " + glGetProgramInfoLog(program, 1024));
-            System.exit(1);
-        }
-
-        glValidateProgram(program);
-        //TODO: figure out what this is for
-//        if (glGetProgrami(program, GL_VALIDATE_STATUS) == 0) {
-//            System.err.println(this.getClass().getName() + " " + glGetProgramInfoLog(program, 1024));
-//            System.exit(1);
-//        }
     }
 }

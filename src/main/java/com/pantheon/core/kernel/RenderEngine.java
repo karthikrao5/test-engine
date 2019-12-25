@@ -16,7 +16,7 @@ public class RenderEngine {
     public void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-        triangle.draw();
+        triangle.render();
 
         //swap buffers
         window.render();
