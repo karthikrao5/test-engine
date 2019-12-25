@@ -10,7 +10,6 @@ import java.util.Set;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
@@ -28,9 +27,9 @@ public class BufferModel {
         storeElementData(model.getTriangles());
         storeDataInAttribute(0, 3, model.getVertices());
 
-        if (model.getTexture() != null) {
-            textures.add(model.getTexture().getTextureId());
-            storeDataInAttribute(1, 2, model.getTexture().getTextCoords());
+        if (model.getTextureId() > 0) {
+            textures.add(model.getTextureId());
+            storeDataInAttribute(1, 2, model.getTextCoords());
         }
     }
 
@@ -39,7 +38,7 @@ public class BufferModel {
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, model.getTexture().getTextureId());
+        glBindTexture(GL_TEXTURE_2D, model.getTextureId());
         glDrawElements(GL_TRIANGLES, model.getTriangles().length, GL_UNSIGNED_INT, 0);
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);

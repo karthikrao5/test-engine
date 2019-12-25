@@ -30,8 +30,8 @@ public class ResourceLoader {
         return shaderSource.toString();
     }
 
-    public static Texture importTextureFile(String fileName) {
-        Texture texture = null;
+    public static int importTextureFile(String fileName) {
+        int textureId = 0;
         try {
             PNGDecoder decoder = new PNGDecoder(ResourceLoader.class.getResourceAsStream("/textures/" + fileName));
             ByteBuffer buffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
@@ -44,7 +44,7 @@ public class ResourceLoader {
             glEnable(GL_TEXTURE_2D);
 
             //create a texture
-            int textureId = glGenTextures();
+            textureId = glGenTextures();
 
             //bind the texture
             glBindTexture(GL_TEXTURE_2D, textureId);
@@ -53,6 +53,7 @@ public class ResourceLoader {
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
             //set the texture parameters, can be GL_LINEAR or GL_NEAREST
+
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -61,13 +62,10 @@ public class ResourceLoader {
 
             // Generate Mip Map
             glGenerateMipmap(GL_TEXTURE_2D);
-
-            texture = new Texture(textureId);
-
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
-        return texture;
+        return textureId;
     }
 }

@@ -28,6 +28,7 @@ public abstract class ShaderProgram {
         this.fragId = addShader(ResourceLoader.loadShader(fragShaderFile), GL_FRAGMENT_SHADER);
 
         compileShader();
+        getAllUniformLocations();
     }
 
     public void start() {
@@ -39,6 +40,11 @@ public abstract class ShaderProgram {
     }
 
     protected abstract void bindAttributes();
+    protected abstract void getAllUniformLocations();
+
+    protected int getUniformLocation(String uniformName) {
+        return glGetUniformLocation(program, uniformName);
+    }
 
     protected void bindAttribute(int attribute, String variableName) {
         glBindAttribLocation(program, attribute, variableName);

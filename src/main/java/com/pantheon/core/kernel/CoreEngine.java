@@ -90,7 +90,7 @@ public class CoreEngine {
 
     private void cleanUp() {
         renderEngine.cleanUp();
-        Window.getInstance().destroy();
+        Window.getInstance().cleanUp();
     }
 
     private void stop() {

@@ -87,7 +87,7 @@ public class Window {
         glfwSwapBuffers(window);
     }
 
-    public void destroy() {
+    public void cleanUp() {
         // Free the window callbacks and destroy the window
         glfwFreeCallbacks(window);
         glfwDestroyWindow(window);
@@ -97,9 +97,6 @@ public class Window {
         glfwSetErrorCallback(null).free();
     }
 
-    public long getWindowId() {
-        return window;
-    }
     public boolean isCloseRequested() {
         return glfwWindowShouldClose(window);
     }
