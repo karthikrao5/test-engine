@@ -7,6 +7,13 @@ public class Model {
     private int textureId;
     private float[] textCoords;
 
+    public Model(float[] vertices, int[] triangles, int textureId, float[] textCoords) {
+        this.vertices = vertices;
+        this.triangles = triangles;
+        this.textureId = textureId;
+        this.textCoords = textCoords;
+    }
+
     public float[] getVertices() {
         return vertices;
     }

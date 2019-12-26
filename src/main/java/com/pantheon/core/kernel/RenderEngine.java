@@ -28,29 +28,85 @@ public class RenderEngine {
         renderer = new Renderer(boxShader);
 
         float[] vertices = new float[]{
-                -0.5f, 0.5f, 0.0f, //V0
-                0.5f, 0.5f, 0.0f, //V2
-                0.5f, -0.5f, 0.0f, //V2
-                -0.5f,-0.5f, 0.0f, //V3
+                -0.5f,0.5f,-0.5f,
+                -0.5f,-0.5f,-0.5f,
+                0.5f,-0.5f,-0.5f,
+                0.5f,0.5f,-0.5f,
+
+                -0.5f,0.5f,0.5f,
+                -0.5f,-0.5f,0.5f,
+                0.5f,-0.5f,0.5f,
+                0.5f,0.5f,0.5f,
+
+                0.5f,0.5f,-0.5f,
+                0.5f,-0.5f,-0.5f,
+                0.5f,-0.5f,0.5f,
+                0.5f,0.5f,0.5f,
+
+                -0.5f,0.5f,-0.5f,
+                -0.5f,-0.5f,-0.5f,
+                -0.5f,-0.5f,0.5f,
+                -0.5f,0.5f,0.5f,
+
+                -0.5f,0.5f,0.5f,
+                -0.5f,0.5f,-0.5f,
+                0.5f,0.5f,-0.5f,
+                0.5f,0.5f,0.5f,
+
+                -0.5f,-0.5f,0.5f,
+                -0.5f,-0.5f,-0.5f,
+                0.5f,-0.5f,-0.5f,
+                0.5f,-0.5f,0.5f
         };
 
         int[] triangles = new int[] {
                 0,1,3,
-                3,1,2
+                3,1,2,
+                4,5,7,
+                7,5,6,
+                8,9,11,
+                11,9,10,
+                12,13,15,
+                15,13,14,
+                16,17,19,
+                19,17,18,
+                20,21,23,
+                23,21,22
         };
 
         float[] textCoords = new float[] {
-                1f,0f,
-                0f,0f,
-                0f,1f,
-                1f,1f
+                0,0,
+                0,1,
+                1,1,
+                1,0,
+                0,0,
+                0,1,
+                1,1,
+                1,0,
+                0,0,
+                0,1,
+                1,1,
+                1,0,
+                0,0,
+                0,1,
+                1,1,
+                1,0,
+                0,0,
+                0,1,
+                1,1,
+                1,0,
+                0,0,
+                0,1,
+                1,1,
+                1,0
         };
 
-        Model model = new Model();
-        model.setTriangles(triangles);
-        model.setVertices(vertices);
-        model.setTextureId(ResourceLoader.importTextureFile("wall_mid.png"));
-        model.setTextCoords(textCoords);
+        Model model = new Model(
+                vertices,
+                triangles,
+                ResourceLoader.importTextureFile("wall_mid.png"),
+                textCoords);
+
         BufferModel bufferModel = new BufferModel(model);
 
         entity = new Entity(bufferModel, new Vector3f(0,0,-1f), 0,0,0, 1);
@@ -58,14 +114,17 @@ public class RenderEngine {
     }
 
     public void render() {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+        glClearColor(0.0f,0.0f,0.0f,1.0f);
+        glEnable(GL_DEPTH_TEST);
+        glClearDepth(1.0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         boxShader.start();
 
         boxShader.loadViewMatrix(camera);
 
-
-        entity.move(new Vector3f(0, 0, -0.002f));
-        entity.rotate(new Vector3f(0,0,0));
+        entity.move(new Vector3f(0, 0, 0));
+        entity.rotate(new Vector3f(1,1,0));
 
         renderer.render(entity, boxShader);
 
