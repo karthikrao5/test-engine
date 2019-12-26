@@ -5,12 +5,12 @@ in vec2 textCoords;
 
 out vec2 pass_textCoords;
 
-uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
-
+uniform mat4 viewMatrix;
+uniform mat4 transformationMatrix;
 
 void main(void)
 {
-    gl_Position = projectionMatrix * transformationMatrix * vec4(vertex_position, 1.0);
+    gl_Position = projectionMatrix * viewMatrix * transformationMatrix * vec4(vertex_position, 1.0);
     pass_textCoords = textCoords;
 }

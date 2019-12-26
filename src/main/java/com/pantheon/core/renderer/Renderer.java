@@ -31,8 +31,6 @@ public class Renderer {
     }
 
     public void render(Entity entity, BoxShader shader) {
-        shader.start();
-
         glBindVertexArray(entity.getBufferModel().getVaoId());
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
@@ -49,8 +47,6 @@ public class Renderer {
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
         glBindVertexArray(0);
-
-        shader.stop();
     }
 
 

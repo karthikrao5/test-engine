@@ -1,5 +1,6 @@
 package com.pantheon.core.shaders;
 
+import com.pantheon.core.kernel.Window;
 import com.pantheon.core.utils.ResourceLoader;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -94,6 +95,19 @@ public abstract class ShaderProgram {
         arr[14] = matrix.m32();
         arr[15] = matrix.m33();
         matBuffer.put(arr).flip();
+
+        if (Window.buttonPressed) {
+            for (int i = 0; i < arr.length; i++) {
+                if (i % 4 == 0) {
+                    System.out.println("");
+                }
+                System.out.print(arr[i] + ", ");
+            }
+            System.out.println("");
+            System.out.printf("setting uniform id: %d \n", location);
+            Window.buttonPressed = false;
+        }
+
         glUniformMatrix4fv(location, false, matBuffer);
     }
 

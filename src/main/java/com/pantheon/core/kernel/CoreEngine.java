@@ -13,6 +13,7 @@ public class CoreEngine {
     private float frameTime = 1.0f / framerate;
     private boolean isRunning;
     private RenderEngine renderEngine;
+    private Input input;
 
     public void createWindow(int width, int height) {
         System.out.println("LWJGL version: " + Version.getVersion() + "!");
@@ -101,14 +102,12 @@ public class CoreEngine {
     }
 
     private void update() {
+        Input.getInstance().update();
+        renderEngine.update();
     }
 
     private void render() {
         renderEngine.render();
-
-        // Poll for window events. The key callback above will only be
-        // invoked during this call.
-        glfwPollEvents();
     }
 
     public void setFps(int fps) {

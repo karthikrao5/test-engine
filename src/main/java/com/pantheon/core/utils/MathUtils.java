@@ -1,6 +1,7 @@
 package com.pantheon.core.utils;
 
 
+import com.pantheon.core.camera.Camera;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -18,6 +19,20 @@ public class MathUtils {
         mat.rotate((float) Math.toRadians(ry), yAxis, mat);
         mat.rotate((float) Math.toRadians(rz), zAxis, mat);
         mat.scale(new Vector3f(scale, scale, scale), mat);
+        return mat;
+    }
+
+    public static Matrix4f createViewMatrix(Camera camera) {
+        Matrix4f mat = new Matrix4f();
+        mat.identity();
+        mat.rotate((float) Math.toRadians(camera.getPitch()), xAxis, mat);
+        mat.rotate((float) Math.toRadians(camera.getYaw()), yAxis, mat);
+        mat.rotate((float) Math.toRadians(camera.getRoll()), zAxis, mat);
+
+        Vector3f cameraPos = camera.getPosition();
+        Vector3f negativeCameraPost = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
+
+        mat.translate(negativeCameraPost, mat);
         return mat;
     }
 }

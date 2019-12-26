@@ -13,6 +13,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
     private static Window _instance = null;
+    public static boolean buttonPressed = false;
 
     private long window;
     private int width;
@@ -44,12 +45,6 @@ public class Window {
         window = glfwCreateWindow(width, height, "Hello World!", NULL, NULL);
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
-
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-        });
 
         // Get the thread stack and push a new frame
         try (MemoryStack stack = stackPush()) {
@@ -118,15 +113,11 @@ public class Window {
         return width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
     public int getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public long getWindow() {
+        return window;
     }
 }
