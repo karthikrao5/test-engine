@@ -1,6 +1,5 @@
 package com.pantheon.core.utils;
 
-import com.pantheon.core.models.Texture;
 import de.matthiasmann.twl.utils.PNGDecoder;
 
 import java.io.*;
@@ -11,23 +10,23 @@ import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
 public class ResourceLoader {
 
-    public static String loadShader(String fileName) {
-        StringBuilder shaderSource = new StringBuilder();
-        BufferedReader shaderReader;
+    public static String loadFileAsString(String fileName) {
+        StringBuilder fileAsString = new StringBuilder();
+        BufferedReader bufferedReader;
 
         try {
-            shaderReader = new BufferedReader(new InputStreamReader(ResourceLoader.class.getResourceAsStream("/shaders/" + fileName)));
+            bufferedReader = new BufferedReader(new InputStreamReader(ResourceLoader.class.getResourceAsStream(fileName)));
             String line;
-            while ((line = shaderReader.readLine()) != null) {
-                shaderSource.append(line).append("\n");
+            while ((line = bufferedReader.readLine()) != null) {
+                fileAsString.append(line).append("\n");
             }
 
-            shaderReader.close();
+            bufferedReader.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
         }
-        return shaderSource.toString();
+        return fileAsString.toString();
     }
 
     public static int importTextureFile(String fileName) {

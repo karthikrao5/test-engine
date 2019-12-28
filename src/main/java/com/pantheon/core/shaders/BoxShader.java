@@ -10,7 +10,7 @@ public class BoxShader extends ShaderProgram {
     private int location_viewMatrix;
 
     public BoxShader() {
-        super("vertex.glsl", "frag.glsl");
+        super("/shaders/vertex.glsl", "/shaders/frag.glsl");
     }
 
     @Override

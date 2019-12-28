@@ -1,6 +1,6 @@
 package com.pantheon.core.buffers;
 
-import com.pantheon.core.models.Model;
+import com.pantheon.core.models.RawModel;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -14,35 +14,23 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
 public class BufferModel {
-    private Model model;
+    private RawModel rawModel;
     private int vaoId;
     private Set<Integer> vbos = new HashSet<>();
     private Set<Integer> textures = new HashSet<>();
 
-    public BufferModel(Model model) {
-        this.model = model;
+    public BufferModel(RawModel rawModel) {
+        this.rawModel = rawModel;
         vaoId = glGenVertexArrays();
         glBindVertexArray(vaoId);
 
-        storeElementData(model.getTriangles());
-        storeDataInAttribute(0, 3, model.getVertices());
+        storeElementData(rawModel.getTriangles());
+        storeDataInAttribute(0, 3, rawModel.getVertices());
 
-        if (model.getTextureId() > 0) {
-            textures.add(model.getTextureId());
-            storeDataInAttribute(1, 2, model.getTextCoords());
+        if (rawModel.getTextureId() > 0) {
+            textures.add(rawModel.getTextureId());
+            storeDataInAttribute(1, 2, rawModel.getTextCoords());
         }
-    }
-
-    public void draw() {
-        glBindVertexArray(vaoId);
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, model.getTextureId());
-        glDrawElements(GL_TRIANGLES, model.getTriangles().length, GL_UNSIGNED_INT, 0);
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glBindVertexArray(0);
     }
 
     public void cleanUp() {
@@ -93,15 +81,11 @@ public class BufferModel {
         return vaoId;
     }
 
-    public void setVaoId(int vaoId) {
-        this.vaoId = vaoId;
+    public RawModel getRawModel() {
+        return rawModel;
     }
 
-    public Model getModel() {
-        return model;
-    }
-
-    public void setModel(Model model) {
-        this.model = model;
+    public void setRawModel(RawModel rawModel) {
+        this.rawModel = rawModel;
     }
 }

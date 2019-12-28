@@ -34,6 +34,16 @@ public class Camera {
             Window.buttonPressed = true;
             this.position.z += 0.02f;
         }
+        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_UP)) {
+            System.out.println("UP pressed pos: " + position.toString());
+            Window.buttonPressed = true;
+            this.position.y += 0.02f;
+        }
+        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_DOWN)) {
+            System.out.println("DOWN pressed pos: " + position.toString());
+            Window.buttonPressed = true;
+            this.position.y -= 0.02f;
+        }
     }
 
     public Vector3f getPosition() {

@@ -25,8 +25,8 @@ public abstract class ShaderProgram {
 
         bindAttributes();
 
-        this.vertexId = addShader(ResourceLoader.loadShader(vertexShaderFile), GL_VERTEX_SHADER);
-        this.fragId = addShader(ResourceLoader.loadShader(fragShaderFile), GL_FRAGMENT_SHADER);
+        this.vertexId = addShader(ResourceLoader.loadFileAsString(vertexShaderFile), GL_VERTEX_SHADER);
+        this.fragId = addShader(ResourceLoader.loadFileAsString(fragShaderFile), GL_FRAGMENT_SHADER);
 
         compileShader();
         getAllUniformLocations();
@@ -96,17 +96,17 @@ public abstract class ShaderProgram {
         arr[15] = matrix.m33();
         matBuffer.put(arr).flip();
 
-        if (Window.buttonPressed) {
-            for (int i = 0; i < arr.length; i++) {
-                if (i % 4 == 0) {
-                    System.out.println("");
-                }
-                System.out.print(arr[i] + ", ");
-            }
-            System.out.println("");
-            System.out.printf("setting uniform id: %d \n", location);
-            Window.buttonPressed = false;
-        }
+//        if (Window.buttonPressed) {
+//            for (int i = 0; i < arr.length; i++) {
+//                if (i % 4 == 0) {
+//                    System.out.println("");
+//                }
+//                System.out.print(arr[i] + ", ");
+//            }
+//            System.out.println("");
+//            System.out.printf("setting uniform id: %d \n", location);
+//            Window.buttonPressed = false;
+//        }
 
         glUniformMatrix4fv(location, false, matBuffer);
     }

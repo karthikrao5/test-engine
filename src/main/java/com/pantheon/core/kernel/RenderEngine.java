@@ -3,15 +3,16 @@ package com.pantheon.core.kernel;
 import com.pantheon.core.buffers.BufferModel;
 import com.pantheon.core.camera.Camera;
 import com.pantheon.core.models.Entity;
-import com.pantheon.core.models.Model;
+import com.pantheon.core.models.RawModel;
 import com.pantheon.core.renderer.Renderer;
 import com.pantheon.core.shaders.BoxShader;
+import com.pantheon.core.utils.OBJLoader;
 import com.pantheon.core.utils.ResourceLoader;
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
-import static org.lwjgl.glfw.GLFW.glfwSetCharModsCallback;
+import java.io.FileNotFoundException;
+
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -101,15 +102,16 @@ public class RenderEngine {
                 1,0
         };
 
-        Model model = new Model(
-                vertices,
-                triangles,
-                ResourceLoader.importTextureFile("wall_mid.png"),
-                textCoords);
+        RawModel rawModel = null;
+        try {
+            rawModel = OBJLoader.loadObj("/objs/dragon.obj");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        rawModel.setTextureId(ResourceLoader.importTextureFile("white.png"));
+        BufferModel bufferModel = new BufferModel(rawModel);
 
-        BufferModel bufferModel = new BufferModel(model);
-
-        entity = new Entity(bufferModel, new Vector3f(0,0,-1f), 0,0,0, 1);
+        entity = new Entity(bufferModel, new Vector3f(0,-1f,-1f), 0,0,0, 0.1f);
         camera = new Camera();
     }
 
@@ -123,8 +125,8 @@ public class RenderEngine {
 
         boxShader.loadViewMatrix(camera);
 
-        entity.move(new Vector3f(0, 0, 0));
-        entity.rotate(new Vector3f(1,1,0));
+//        entity.move(new Vector3f(0, 0, 0));
+        entity.rotate(new Vector3f(0,-0.5f,0));
 
         renderer.render(entity, boxShader);
 
@@ -134,6 +136,7 @@ public class RenderEngine {
     }
 
     public void cleanUp() {
+        entity.getBufferModel().cleanUp();
         boxShader.cleanUp();
     }
 
@@ -141,7 +144,6 @@ public class RenderEngine {
         camera.move();
 
         if (Input.getInstance().isKeyPushed(GLFW.GLFW_KEY_ESCAPE)){
-            System.out.println("scape pushed");
             glfwSetWindowShouldClose(window.getWindow(), true); // We will detect this in the rendering loop
         }
     }
