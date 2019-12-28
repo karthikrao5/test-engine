@@ -5,12 +5,14 @@ public class RawModel {
     private float[] vertices;
     private int[] triangles;
     private float[] textCoords;
+    private float[] normals;
     private int textureId;
 
-    public RawModel(float[] vertices, int[] triangles, float[] textCoords) {
+    public RawModel(float[] vertices, int[] triangles, float[] textCoords, float[] normals) {
         this.vertices = vertices;
         this.triangles = triangles;
         this.textCoords = textCoords;
+        this.normals = normals;
     }
 
     public float[] getVertices() {
@@ -43,5 +45,13 @@ public class RawModel {
 
     public void setTextureId(int textureId) {
         this.textureId = textureId;
+    }
+
+    public float[] getNormals() {
+        return normals;
+    }
+
+    public void setNormals(float[] normals) {
+        this.normals = normals;
     }
 }

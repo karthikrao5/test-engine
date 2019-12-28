@@ -1,6 +1,7 @@
 package com.pantheon.core.shaders;
 
 import com.pantheon.core.camera.Camera;
+import com.pantheon.core.kernel.Light;
 import com.pantheon.core.utils.MathUtils;
 import org.joml.Matrix4f;
 
@@ -8,6 +9,8 @@ public class BoxShader extends ShaderProgram {
     private int location_transformationMatrix;
     private int location_projectionMatrix;
     private int location_viewMatrix;
+    private int location_lightPosition;
+    private int location_lightColor;
 
     public BoxShader() {
         super("/shaders/vertex.glsl", "/shaders/frag.glsl");
@@ -17,6 +20,7 @@ public class BoxShader extends ShaderProgram {
     protected void bindAttributes() {
         this.bindAttribute(0, "position");
         this.bindAttribute(1, "textureCoords");
+        this.bindAttribute(2, "normal");
     }
 
     @Override
@@ -24,6 +28,9 @@ public class BoxShader extends ShaderProgram {
         location_transformationMatrix = super.getUniformLocation("transformationMatrix");
         location_projectionMatrix = super.getUniformLocation("projectionMatrix");
         location_viewMatrix = super.getUniformLocation("viewMatrix");
+        location_lightPosition = super.getUniformLocation("lightPosition");
+        location_lightColor = super.getUniformLocation("lightColor");
+
         System.out.printf("trans: %d, proj: %d, view: %d \n", location_transformationMatrix, location_projectionMatrix, location_viewMatrix);
     }
 
@@ -38,5 +45,10 @@ public class BoxShader extends ShaderProgram {
     public void loadViewMatrix(Camera camera) {
         Matrix4f matrix = MathUtils.createViewMatrix(camera);
         super.loadMatrix(location_viewMatrix, matrix);
+    }
+
+    public void loadLight(Light light) {
+        super.loadVector3f(location_lightPosition, light.getPosition());
+        super.loadVector3f(location_lightColor, light.getColor());
     }
 }

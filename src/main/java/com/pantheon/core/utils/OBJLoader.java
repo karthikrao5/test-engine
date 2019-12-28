@@ -91,7 +91,7 @@ public class OBJLoader {
             triangles[i] = indices.get(i);
         }
 
-        return new RawModel(verticesArray, triangles, textCoords);
+        return new RawModel(verticesArray, triangles, textCoords, normals);
     }
 
     private static void processVertex(

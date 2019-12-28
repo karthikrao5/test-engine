@@ -22,85 +22,12 @@ public class RenderEngine {
     private Entity entity;
     private Renderer renderer;
     private Camera camera;
+    private Light light;
 
     public RenderEngine() {
         window = Window.getInstance();
         boxShader = new BoxShader();
         renderer = new Renderer(boxShader);
-
-        float[] vertices = new float[]{
-                -0.5f,0.5f,-0.5f,
-                -0.5f,-0.5f,-0.5f,
-                0.5f,-0.5f,-0.5f,
-                0.5f,0.5f,-0.5f,
-
-                -0.5f,0.5f,0.5f,
-                -0.5f,-0.5f,0.5f,
-                0.5f,-0.5f,0.5f,
-                0.5f,0.5f,0.5f,
-
-                0.5f,0.5f,-0.5f,
-                0.5f,-0.5f,-0.5f,
-                0.5f,-0.5f,0.5f,
-                0.5f,0.5f,0.5f,
-
-                -0.5f,0.5f,-0.5f,
-                -0.5f,-0.5f,-0.5f,
-                -0.5f,-0.5f,0.5f,
-                -0.5f,0.5f,0.5f,
-
-                -0.5f,0.5f,0.5f,
-                -0.5f,0.5f,-0.5f,
-                0.5f,0.5f,-0.5f,
-                0.5f,0.5f,0.5f,
-
-                -0.5f,-0.5f,0.5f,
-                -0.5f,-0.5f,-0.5f,
-                0.5f,-0.5f,-0.5f,
-                0.5f,-0.5f,0.5f
-        };
-
-        int[] triangles = new int[] {
-                0,1,3,
-                3,1,2,
-                4,5,7,
-                7,5,6,
-                8,9,11,
-                11,9,10,
-                12,13,15,
-                15,13,14,
-                16,17,19,
-                19,17,18,
-                20,21,23,
-                23,21,22
-        };
-
-        float[] textCoords = new float[] {
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0
-        };
 
         RawModel rawModel = null;
         try {
@@ -111,8 +38,9 @@ public class RenderEngine {
         rawModel.setTextureId(ResourceLoader.importTextureFile("white.png"));
         BufferModel bufferModel = new BufferModel(rawModel);
 
-        entity = new Entity(bufferModel, new Vector3f(0,-1f,-1f), 0,0,0, 0.1f);
+        entity = new Entity(bufferModel, new Vector3f(0,0,-25f), 0,0,0, 1f);
         camera = new Camera();
+        light = new Light(new Vector3f(0,0, 10f), new Vector3f(1,1,1));
     }
 
     public void render() {
@@ -124,7 +52,7 @@ public class RenderEngine {
         boxShader.start();
 
         boxShader.loadViewMatrix(camera);
-
+        boxShader.loadLight(light);
 //        entity.move(new Vector3f(0, 0, 0));
         entity.rotate(new Vector3f(0,-0.5f,0));
 

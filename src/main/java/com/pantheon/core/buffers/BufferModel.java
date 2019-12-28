@@ -31,6 +31,8 @@ public class BufferModel {
             textures.add(rawModel.getTextureId());
             storeDataInAttribute(1, 2, rawModel.getTextCoords());
         }
+
+        storeDataInAttribute(2, 3, rawModel.getNormals());
     }
 
     public void cleanUp() {

@@ -1,11 +1,24 @@
 #version 330 core
 
 in vec2 pass_textCoords;
+in vec3 surfaceNormal;
+in vec3 toLightVector;
+
 out vec4 out_Color;
 
 uniform sampler2D textureSampler;
+uniform vec3 lightColor;
 
 void main(void)
 {
-    out_Color = texture(textureSampler, pass_textCoords);
+    vec3 unitNormal = normalize(surfaceNormal);
+    vec3 unitLightVector = normalize(toLightVector);
+
+    float ndot = dot(unitNormal, unitLightVector);
+
+    float brightness = max(ndot, 0.0);
+
+    vec3 diffuse = brightness * lightColor;
+
+    out_Color = vec4(diffuse, 1.0) * texture(textureSampler, pass_textCoords);
 }
