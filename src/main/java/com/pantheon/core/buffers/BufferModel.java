@@ -1,6 +1,7 @@
 package com.pantheon.core.buffers;
 
 import com.pantheon.core.models.RawModel;
+import com.pantheon.core.models.TexturedModel;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -14,25 +15,26 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
 public class BufferModel {
-    private RawModel rawModel;
+    private TexturedModel texturedModel;
     private int vaoId;
     private Set<Integer> vbos = new HashSet<>();
     private Set<Integer> textures = new HashSet<>();
 
-    public BufferModel(RawModel rawModel) {
-        this.rawModel = rawModel;
+    public BufferModel(TexturedModel texturedModel) {
+        this.texturedModel = texturedModel;
         vaoId = glGenVertexArrays();
         glBindVertexArray(vaoId);
 
-        storeElementData(rawModel.getTriangles());
-        storeDataInAttribute(0, 3, rawModel.getVertices());
+        storeElementData(texturedModel.getRawModel().getTriangles());
+        storeDataInAttribute(0, 3, texturedModel.getRawModel().getVertices());
 
-        if (rawModel.getTextureId() > 0) {
-            textures.add(rawModel.getTextureId());
-            storeDataInAttribute(1, 2, rawModel.getTextCoords());
+        if (texturedModel.getTextureId() > 0) {
+            textures.add(texturedModel.getTextureId());
+            textures.add(texturedModel.getTextureId());
+            storeDataInAttribute(1, 2, texturedModel.getRawModel().getTextCoords());
         }
 
-        storeDataInAttribute(2, 3, rawModel.getNormals());
+        storeDataInAttribute(2, 3, texturedModel.getRawModel().getNormals());
     }
 
     public void cleanUp() {
@@ -83,11 +85,11 @@ public class BufferModel {
         return vaoId;
     }
 
-    public RawModel getRawModel() {
-        return rawModel;
+    public TexturedModel getTexturedModel() {
+        return texturedModel;
     }
 
-    public void setRawModel(RawModel rawModel) {
-        this.rawModel = rawModel;
+    public void setTexturedModel(TexturedModel texturedModel) {
+        this.texturedModel = texturedModel;
     }
 }

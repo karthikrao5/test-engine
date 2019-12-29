@@ -4,9 +4,8 @@ package com.pantheon.core.models;
 public class RawModel {
     private float[] vertices;
     private int[] triangles;
-    private float[] textCoords;
     private float[] normals;
-    private int textureId;
+    private float[] textCoords;
 
     public RawModel(float[] vertices, int[] triangles, float[] textCoords, float[] normals) {
         this.vertices = vertices;
@@ -37,14 +36,6 @@ public class RawModel {
 
     public void setTextCoords(float[] textCoords) {
         this.textCoords = textCoords;
-    }
-
-    public int getTextureId() {
-        return textureId;
-    }
-
-    public void setTextureId(int textureId) {
-        this.textureId = textureId;
     }
 
     public float[] getNormals() {

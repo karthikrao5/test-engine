@@ -4,6 +4,7 @@ import com.pantheon.core.buffers.BufferModel;
 import com.pantheon.core.camera.Camera;
 import com.pantheon.core.models.Entity;
 import com.pantheon.core.models.RawModel;
+import com.pantheon.core.models.TexturedModel;
 import com.pantheon.core.renderer.Renderer;
 import com.pantheon.core.shaders.BoxShader;
 import com.pantheon.core.utils.OBJLoader;
@@ -35,8 +36,10 @@ public class RenderEngine {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        rawModel.setTextureId(ResourceLoader.importTextureFile("white.png"));
-        BufferModel bufferModel = new BufferModel(rawModel);
+
+        TexturedModel texturedModel = new TexturedModel(ResourceLoader.importTextureFile("white.png"), rawModel);
+
+        BufferModel bufferModel = new BufferModel(texturedModel);
 
         entity = new Entity(bufferModel, new Vector3f(0,0,-25f), 0,0,0, 1f);
         camera = new Camera();
