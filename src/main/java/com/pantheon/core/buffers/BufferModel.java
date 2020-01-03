@@ -1,7 +1,7 @@
 package com.pantheon.core.buffers;
 
 import com.pantheon.core.models.RawModel;
-import com.pantheon.core.models.TexturedModel;
+import com.pantheon.core.models.Texture;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -15,26 +15,28 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
 public class BufferModel {
-    private TexturedModel texturedModel;
+    private RawModel rawModel;
+    private Texture texture;
     private int vaoId;
     private Set<Integer> vbos = new HashSet<>();
     private Set<Integer> textures = new HashSet<>();
 
-    public BufferModel(TexturedModel texturedModel) {
-        this.texturedModel = texturedModel;
+    public BufferModel(RawModel rawModel, Texture texture) {
+        System.out.println("Texture in buffermodel: " + texture.toString());
+        this.rawModel = rawModel;
+        this.texture = texture;
         vaoId = glGenVertexArrays();
         glBindVertexArray(vaoId);
 
-        storeElementData(texturedModel.getRawModel().getTriangles());
-        storeDataInAttribute(0, 3, texturedModel.getRawModel().getVertices());
+        storeElementData(rawModel.getTriangles());
+        storeDataInAttribute(0, 3, rawModel.getVertices());
 
-        if (texturedModel.getTextureId() > 0) {
-            textures.add(texturedModel.getTextureId());
-            textures.add(texturedModel.getTextureId());
-            storeDataInAttribute(1, 2, texturedModel.getRawModel().getTextCoords());
+        if (texture.getTextureId() > 0) {
+            textures.add(texture.getTextureId());
+            storeDataInAttribute(1, 2, rawModel.getTextCoords());
         }
 
-        storeDataInAttribute(2, 3, texturedModel.getRawModel().getNormals());
+        storeDataInAttribute(2, 3, rawModel.getNormals());
     }
 
     public void cleanUp() {
@@ -85,11 +87,11 @@ public class BufferModel {
         return vaoId;
     }
 
-    public TexturedModel getTexturedModel() {
-        return texturedModel;
+    public Texture getTexture() {
+        return texture;
     }
 
-    public void setTexturedModel(TexturedModel texturedModel) {
-        this.texturedModel = texturedModel;
+    public RawModel getRawModel() {
+        return rawModel;
     }
 }

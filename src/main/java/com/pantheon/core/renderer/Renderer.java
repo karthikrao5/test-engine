@@ -43,8 +43,8 @@ public class Renderer {
         shader.loadTransformationMatrix(transform);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, entity.getBufferModel().getTexturedModel().getTextureId());
-        glDrawElements(GL_TRIANGLES, entity.getBufferModel().getTexturedModel().getRawModel().getTriangles().length, GL_UNSIGNED_INT, 0);
+        glBindTexture(GL_TEXTURE_2D, entity.getBufferModel().getTexture().getTextureId());
+        glDrawElements(GL_TRIANGLES, entity.getBufferModel().getRawModel().getTriangles().length, GL_UNSIGNED_INT, 0);
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
         glDisableVertexAttribArray(2);

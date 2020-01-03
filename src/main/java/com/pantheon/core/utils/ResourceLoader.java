@@ -65,6 +65,8 @@ public class ResourceLoader {
             e.printStackTrace();
             System.exit(1);
         }
+
+        System.out.printf("Setting textureId: %d\n", textureId);
         return textureId;
     }
 }

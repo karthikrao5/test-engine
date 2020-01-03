@@ -12,6 +12,9 @@ public class BoxShader extends ShaderProgram {
     private int location_lightPosition;
     private int location_lightColor;
 
+    private int location_shineDamper;
+    private int location_reflectivity;
+
     public BoxShader() {
         super("/shaders/vertex.glsl", "/shaders/frag.glsl");
     }
@@ -30,8 +33,13 @@ public class BoxShader extends ShaderProgram {
         location_viewMatrix = super.getUniformLocation("viewMatrix");
         location_lightPosition = super.getUniformLocation("lightPosition");
         location_lightColor = super.getUniformLocation("lightColor");
+        location_lightColor = super.getUniformLocation("shineDamper");
+        location_lightColor = super.getUniformLocation("reflectivity");
+    }
 
-        System.out.printf("trans: %d, proj: %d, view: %d \n", location_transformationMatrix, location_projectionMatrix, location_viewMatrix);
+    public void loadShineVariable(float damper, float reflectivity) {
+        super.loadFloat(location_shineDamper, damper);
+        super.loadFloat(location_reflectivity, reflectivity);
     }
 
     public void loadTransformationMatrix(Matrix4f matrix) {
