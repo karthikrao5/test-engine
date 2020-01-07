@@ -41,9 +41,9 @@ public class RenderEngine {
 
         BufferModel bufferModel = new BufferModel(texturedModel);
 
-        entity = new Entity(bufferModel, new Vector3f(0,0,-25f), 0,0,0, 1f);
+        entity = new Entity(bufferModel, new Vector3f(0,0,-10f), 0,0,0, 1f);
         camera = new Camera();
-        light = new Light(new Vector3f(0,0, 10f), new Vector3f(1,1,1));
+        light = new Light(new Vector3f(0,10f, 10f), new Vector3f(1,1,1));
     }
 
     public void render() {
@@ -57,7 +57,7 @@ public class RenderEngine {
         boxShader.loadViewMatrix(camera);
         boxShader.loadLight(light);
 //        entity.move(new Vector3f(0, 0, 0));
-        entity.rotate(new Vector3f(0,-0.5f,0));
+        entity.rotate(new Vector3f(0,-0.2f,0));
 
         renderer.render(entity, boxShader);
 

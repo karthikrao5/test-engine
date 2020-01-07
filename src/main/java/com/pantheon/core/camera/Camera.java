@@ -15,33 +15,21 @@ public class Camera {
 
     public void move() {
         if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_W)) {
-            System.out.println("w pressed pos: " + position.toString());
-            Window.buttonPressed = true;
             this.position.z -= 0.02f;
         }
         if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_D)) {
-            System.out.println("d pressed pos: " + position.toString());
-            Window.buttonPressed = true;
             this.position.x += 0.02f;
         }
         if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_A)) {
-            System.out.println("A pressed pos: " + position.toString());
-            Window.buttonPressed = true;
             this.position.x -= 0.02f;
         }
         if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_S)) {
-            System.out.println("s pressed pos: " + position.toString());
-            Window.buttonPressed = true;
             this.position.z += 0.02f;
         }
         if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_UP)) {
-            System.out.println("UP pressed pos: " + position.toString());
-            Window.buttonPressed = true;
             this.position.y += 0.02f;
         }
         if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_DOWN)) {
-            System.out.println("DOWN pressed pos: " + position.toString());
-            Window.buttonPressed = true;
             this.position.y -= 0.02f;
         }
     }
