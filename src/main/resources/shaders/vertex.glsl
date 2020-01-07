@@ -8,6 +8,9 @@ out vec2 pass_textCoords;
 out vec3 surfaceNormal;
 out vec3 toLightVector;
 
+out vec3 reflectedLightVector;
+out vec3 toCameraVector;
+
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 transformationMatrix;
@@ -21,4 +24,6 @@ void main(void)
 
     surfaceNormal = (transformationMatrix * vec4(normal, 0.0)).xyz;
     toLightVector = lightPosition - worldPosition.xyz;
+
+    toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyx - worldPosition.xyz;
 }

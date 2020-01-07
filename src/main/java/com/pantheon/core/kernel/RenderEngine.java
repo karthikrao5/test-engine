@@ -37,13 +37,16 @@ public class RenderEngine {
             e.printStackTrace();
         }
 
-        TexturedModel texturedModel = new TexturedModel(ResourceLoader.importTextureFile("white.png"), rawModel);
+        TexturedModel texturedModel = new TexturedModel(ResourceLoader.importTextureFile("blue.png"), rawModel);
+        texturedModel.setReflectivity(0.5f);
+        texturedModel.setShineDamper(10);
 
         BufferModel bufferModel = new BufferModel(texturedModel);
 
         entity = new Entity(bufferModel, new Vector3f(0,0,-10f), 0,0,0, 1f);
         camera = new Camera();
         light = new Light(new Vector3f(0,10f, 10f), new Vector3f(1,1,1));
+        System.out.println(entity.getBufferModel().getTexturedModel().getReflectivity());
     }
 
     public void render() {
@@ -56,6 +59,10 @@ public class RenderEngine {
 
         boxShader.loadViewMatrix(camera);
         boxShader.loadLight(light);
+
+        boxShader.loadShineVariables(entity.getBufferModel().getTexturedModel().getShineDamper()
+                , entity.getBufferModel().getTexturedModel().getReflectivity());
+
 //        entity.move(new Vector3f(0, 0, 0));
         entity.rotate(new Vector3f(0,-0.2f,0));
 
