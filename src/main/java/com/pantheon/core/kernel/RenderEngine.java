@@ -1,6 +1,5 @@
 package com.pantheon.core.kernel;
 
-import com.pantheon.core.buffers.BufferModel;
 import com.pantheon.core.camera.Camera;
 import com.pantheon.core.models.Entity;
 import com.pantheon.core.models.RawModel;
@@ -13,7 +12,6 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +45,7 @@ public class RenderEngine {
             e.printStackTrace();
         }
 
-        TexturedModel texturedModel = new TexturedModel(ResourceLoader.importTextureFile(String.format("%s.png", colors.get(rand.nextInt(4)))), rawModel);
+        TexturedModel texturedModel = new TexturedModel(ResourceLoader.importTextureFile(String.format("%s.png", colors.get(rand.nextInt(3)))), rawModel);
         texturedModel.setReflectivity(0.5f);
         texturedModel.setShineDamper(10);
 
@@ -79,9 +77,9 @@ public class RenderEngine {
         boxShader.loadShineVariables(entity.getTexturedModel().getShineDamper()
                 , entity.getTexturedModel().getReflectivity());
 
-        entity.rotate(new Vector3f(0, -0.2f, 0));
 
         for (Entity entity : entities) {
+            entity.rotate(new Vector3f(0, -0.2f, 0));
             renderer.render(entity, boxShader);
         }
 
