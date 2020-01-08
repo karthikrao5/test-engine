@@ -12,10 +12,7 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 import static org.lwjgl.opengl.GL11.*;
@@ -27,14 +24,14 @@ public class RenderEngine {
     private Renderer renderer;
     private Camera camera;
     private Light light;
-    private List<Entity> entities;
+    private Map<TexturedModel, List<Entity>> entityMap;
 
     public RenderEngine() {
         window = Window.getInstance();
         boxShader = new BaseShader();
         renderer = new Renderer(boxShader);
+        entityMap = new HashMap<>();
 
-        entities = new ArrayList<>();
         List<String> colors = Arrays.asList("blue", "black", "white");
         Random rand = new Random();
 
@@ -49,6 +46,9 @@ public class RenderEngine {
         texturedModel.setReflectivity(0.5f);
         texturedModel.setShineDamper(10);
 
+        entityMap.put(texturedModel, new ArrayList<>());
+
+        List<Entity> entities = entityMap.get(texturedModel);
 
         for (int i = 0; i < 200; i++) {
             float x = rand.nextFloat() * 100 - 50;
@@ -74,14 +74,7 @@ public class RenderEngine {
         boxShader.loadViewMatrix(camera);
         boxShader.loadLight(light);
 
-        boxShader.loadShineVariables(entity.getTexturedModel().getShineDamper()
-                , entity.getTexturedModel().getReflectivity());
-
-
-        for (Entity entity : entities) {
-            entity.rotate(new Vector3f(0, -0.2f, 0));
-            renderer.render(entity, boxShader);
-        }
+        renderer.render(entityMap);
 
         boxShader.stop();
         //swap buffers
