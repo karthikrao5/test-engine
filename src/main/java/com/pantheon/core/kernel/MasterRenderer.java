@@ -2,38 +2,65 @@ package com.pantheon.core.kernel;
 
 import com.pantheon.core.camera.Camera;
 import com.pantheon.core.models.Entity;
+import com.pantheon.core.models.Terrain;
 import com.pantheon.core.models.TexturedModel;
-import com.pantheon.core.renderer.Renderer;
+import com.pantheon.core.renderer.EntityRenderer;
+import com.pantheon.core.renderer.TerrainRenderer;
 import com.pantheon.core.shaders.BaseShader;
+import com.pantheon.core.shaders.TerrainShader;
+import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.lwjgl.opengl.GL11.*;
+
 public class MasterRenderer {
+    private static final float FOV = 70f;
+    private static final float NEAR_PLANE = 0.1f;
+    private static final float FAR_PLANE = 1000f;
 
-    private BaseShader shader;
-    private Renderer renderer;
+    private Matrix4f projectionMatrix;
+
+    private BaseShader entityShader;
+    private TerrainShader terrainShader;
+
+    private EntityRenderer entityRenderer;
+    private TerrainRenderer terrainRenderer;
     private Map<TexturedModel, List<Entity>> entityMap;
-
+    private List<Terrain> terrains;
 
     public MasterRenderer() {
-        this.shader = new BaseShader();
-        this.renderer = new Renderer(shader);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+
+        createProjectionMatrix();
+
+        this.entityShader = new BaseShader();
+        this.terrainShader = new TerrainShader();
+
+        this.entityRenderer = new EntityRenderer(entityShader, projectionMatrix);
+        this.terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
+
         this.entityMap = new HashMap<>();
+        this.terrains = new ArrayList<>();
     }
 
     public void render(Light light, Camera camera) {
-        renderer.prepare();
-        shader.start();
+        prepare();
+        entityShader.start();
+        entityShader.loadViewMatrix(camera);
+        entityShader.loadLight(light);
+        entityRenderer.render(entityMap);
+        entityShader.stop();
 
-        shader.loadViewMatrix(camera);
-        shader.loadLight(light);
-
-        renderer.render(entityMap);
-
-        shader.stop();
+        terrainShader.start();
+        terrainShader.loadViewMatrix(camera);
+        terrainShader.loadLight(light);
+        terrainRenderer.render(terrains);
+        terrainShader.stop();
     }
 
     public void processEntity(Entity entity) {
@@ -47,7 +74,34 @@ public class MasterRenderer {
         }
     }
 
+    public void processTerrain(Terrain terrain) {
+        terrains.add(terrain);
+    }
+
     public void cleanUp() {
-        shader.cleanUp();
+        entityShader.cleanUp();
+    }
+
+    private void prepare() {
+        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+        glEnable(GL_DEPTH_TEST);
+        glClearDepth(1.0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    private void createProjectionMatrix() {
+        float aspectRatio = (float) Window.getInstance().getWidth() / (float) Window.getInstance().getHeight();
+        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
+        float x_scale = y_scale / aspectRatio;
+
+        float frustum_length = FAR_PLANE - NEAR_PLANE;
+
+        projectionMatrix = new Matrix4f();
+        projectionMatrix.m00(x_scale);
+        projectionMatrix.m11(y_scale);
+        projectionMatrix.m22(-((FAR_PLANE + NEAR_PLANE) / frustum_length));
+        projectionMatrix.m23(-1);
+        projectionMatrix.m32(-((2 * NEAR_PLANE * FAR_PLANE) / frustum_length));
+        projectionMatrix.m33(0);
     }
 }

@@ -7,7 +7,6 @@ import org.joml.Vector3f;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class OBJLoader {
     public static RawModel loadObj(String filename) throws FileNotFoundException {
@@ -18,14 +17,11 @@ public class OBJLoader {
         String file = ResourceLoader.loadFileAsString(filename);
         String[] lines = file.split("\n");
 
-        Pattern vertexPattern = Pattern.compile("^(vn|v|vt)\\s*?(-?\\d*\\.\\d*)\\s(-?\\d*\\.\\d*)\\s(-?\\d*\\.\\d*)");
-        Pattern facePattern = Pattern.compile("^(f)\\s(\\d*\\/\\d*\\/\\d*)\\s(\\d*\\/\\d*\\/\\d*)\\s(\\d*\\/\\d*\\/\\d*)");
-
         List<Vector3f> vertexList = new ArrayList<>();
         List<Vector2f> textureCoordsList = new ArrayList<>();
         List<Vector3f> normalsList = new ArrayList<>();
 
-        int[] triangles = null;
+        int[] triangles;
 
         for (int i = 0; i < lines.length; i++) {
             if (lines[i].startsWith("v ")
@@ -63,9 +59,9 @@ public class OBJLoader {
         float[] textCoords = new float[vertexList.size() * 2];
         List<Integer> indices = new ArrayList<>();
 
-        for (int j = 0; j < lines.length; j++) {
-            if (lines[j].startsWith("f ")) {
-                String[] vertexes = lines[j].split(" ");
+        for (String line : lines) {
+            if (line.startsWith("f ")) {
+                String[] vertexes = line.split(" ");
 
                 String[] vertex1 = vertexes[1].split("/");
                 String[] vertex2 = vertexes[2].split("/");

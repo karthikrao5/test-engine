@@ -5,6 +5,7 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowTitle;
 import static org.lwjgl.opengl.GL11.glClearColor;
 
 public class CoreEngine {
@@ -70,6 +71,7 @@ public class CoreEngine {
 
                 if (frameCounter >= Constants.NANOSECOND) {
                     setFps(frames);
+                    Window.getInstance().setWindowTitle(String.format("%d frames",frames));
                     frames = 0;
                     frameCounter = 0;
                 }

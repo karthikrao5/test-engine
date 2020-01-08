@@ -86,6 +86,10 @@ public class Window {
         glfwSwapBuffers(window);
     }
 
+    public void setWindowTitle(String title) {
+        glfwSetWindowTitle(window, title);
+    }
+
     public void cleanUp() {
         // Free the window callbacks and destroy the window
         glfwFreeCallbacks(window);
