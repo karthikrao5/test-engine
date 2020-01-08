@@ -7,7 +7,6 @@ import com.pantheon.core.shaders.BaseShader;
 import com.pantheon.core.utils.MathUtils;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.Map;
@@ -76,6 +75,13 @@ public class Renderer {
         }
     }
 
+    public void prepare() {
+        glClearColor(0.2f, 0.2f, 0.0f, 1.0f);
+        glEnable(GL_DEPTH_TEST);
+        glClearDepth(1.0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
     private void prepareTexturedModel(TexturedModel model) {
         glBindVertexArray(model.getVaoId());
         glEnableVertexAttribArray(0);
@@ -101,8 +107,6 @@ public class Renderer {
 
         shader.loadTransformationMatrix(transform);
     }
-
-
 
     private void createProjectionMatrix() {
         float aspectRatio = (float) Window.getInstance().getWidth() / (float) Window.getInstance().getHeight();

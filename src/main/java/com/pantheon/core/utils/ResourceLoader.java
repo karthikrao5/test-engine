@@ -2,7 +2,9 @@ package com.pantheon.core.utils;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;

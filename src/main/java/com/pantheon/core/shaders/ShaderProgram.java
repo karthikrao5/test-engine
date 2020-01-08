@@ -1,6 +1,5 @@
 package com.pantheon.core.shaders;
 
-import com.pantheon.core.kernel.Window;
 import com.pantheon.core.utils.ResourceLoader;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
