@@ -2,11 +2,9 @@ package com.pantheon.core.renderer;
 
 import com.pantheon.core.kernel.Window;
 import com.pantheon.core.models.Entity;
-import com.pantheon.core.shaders.BoxShader;
-import com.pantheon.core.shaders.ShaderProgram;
+import com.pantheon.core.shaders.BaseShader;
 import com.pantheon.core.utils.MathUtils;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
@@ -23,15 +21,17 @@ public class Renderer {
 
     private Matrix4f projectionMatrix;
 
-    public Renderer(BoxShader shader) {
+    public Renderer(BaseShader shader) {
         createProjectionMatrix();
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);
         shader.stop();
     }
 
-    public void render(Entity entity, BoxShader shader) {
-        glBindVertexArray(entity.getBufferModel().getVaoId());
+    public void render(Entity entity, BaseShader shader) {
+        glBindVertexArray(entity.getTexturedModel().getVaoId());
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
         glEnableVertexAttribArray(2);
@@ -43,8 +43,8 @@ public class Renderer {
         shader.loadTransformationMatrix(transform);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, entity.getBufferModel().getTexturedModel().getTextureId());
-        glDrawElements(GL_TRIANGLES, entity.getBufferModel().getTexturedModel().getRawModel().getTriangles().length, GL_UNSIGNED_INT, 0);
+        glBindTexture(GL_TEXTURE_2D, entity.getTexturedModel().getTextureId());
+        glDrawElements(GL_TRIANGLES, entity.getTexturedModel().getRawModel().getTriangles().length, GL_UNSIGNED_INT, 0);
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
         glDisableVertexAttribArray(2);

@@ -6,29 +6,39 @@ import com.pantheon.core.models.Entity;
 import com.pantheon.core.models.RawModel;
 import com.pantheon.core.models.TexturedModel;
 import com.pantheon.core.renderer.Renderer;
-import com.pantheon.core.shaders.BoxShader;
+import com.pantheon.core.shaders.BaseShader;
 import com.pantheon.core.utils.OBJLoader;
 import com.pantheon.core.utils.ResourceLoader;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 import static org.lwjgl.opengl.GL11.*;
 
 public class RenderEngine {
     private Window window;
-    private BoxShader boxShader;
+    private BaseShader boxShader;
     private Entity entity;
     private Renderer renderer;
     private Camera camera;
     private Light light;
+    private List<Entity> entities;
 
     public RenderEngine() {
         window = Window.getInstance();
-        boxShader = new BoxShader();
+        boxShader = new BaseShader();
         renderer = new Renderer(boxShader);
+
+        entities = new ArrayList<>();
+        List<String> colors = Arrays.asList("blue", "black", "white");
+        Random rand = new Random();
 
         RawModel rawModel = null;
         try {
@@ -37,20 +47,26 @@ public class RenderEngine {
             e.printStackTrace();
         }
 
-        TexturedModel texturedModel = new TexturedModel(ResourceLoader.importTextureFile("blue.png"), rawModel);
+        TexturedModel texturedModel = new TexturedModel(ResourceLoader.importTextureFile(String.format("%s.png", colors.get(rand.nextInt(4)))), rawModel);
         texturedModel.setReflectivity(0.5f);
         texturedModel.setShineDamper(10);
 
-        BufferModel bufferModel = new BufferModel(texturedModel);
 
-        entity = new Entity(bufferModel, new Vector3f(0,0,-10f), 0,0,0, 1f);
+        for (int i = 0; i < 200; i++) {
+            float x = rand.nextFloat() * 100 - 50;
+            float y = rand.nextFloat() * 100 - 50;
+            float z = rand.nextFloat() * -300;
+
+            entity = new Entity(texturedModel, new Vector3f(x, y, z), rand.nextFloat() * 180f, rand.nextFloat() * 180f, 0f, 1f);
+            entities.add(entity);
+        }
+
         camera = new Camera();
-        light = new Light(new Vector3f(0,10f, 10f), new Vector3f(1,1,1));
-        System.out.println(entity.getBufferModel().getTexturedModel().getReflectivity());
+        light = new Light(new Vector3f(0, 10f, 10f), new Vector3f(1, 1, 1));
     }
 
     public void render() {
-        glClearColor(0.0f,0.0f,0.0f,1.0f);
+        glClearColor(0.2f, 0.2f, 0.0f, 1.0f);
         glEnable(GL_DEPTH_TEST);
         glClearDepth(1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -60,13 +76,14 @@ public class RenderEngine {
         boxShader.loadViewMatrix(camera);
         boxShader.loadLight(light);
 
-        boxShader.loadShineVariables(entity.getBufferModel().getTexturedModel().getShineDamper()
-                , entity.getBufferModel().getTexturedModel().getReflectivity());
+        boxShader.loadShineVariables(entity.getTexturedModel().getShineDamper()
+                , entity.getTexturedModel().getReflectivity());
 
-//        entity.move(new Vector3f(0, 0, 0));
-        entity.rotate(new Vector3f(0,-0.2f,0));
+        entity.rotate(new Vector3f(0, -0.2f, 0));
 
-        renderer.render(entity, boxShader);
+        for (Entity entity : entities) {
+            renderer.render(entity, boxShader);
+        }
 
         boxShader.stop();
         //swap buffers
@@ -74,14 +91,14 @@ public class RenderEngine {
     }
 
     public void cleanUp() {
-        entity.getBufferModel().cleanUp();
+        entity.getTexturedModel().cleanUp();
         boxShader.cleanUp();
     }
 
     public void update() {
         camera.move();
 
-        if (Input.getInstance().isKeyPushed(GLFW.GLFW_KEY_ESCAPE)){
+        if (Input.getInstance().isKeyPushed(GLFW.GLFW_KEY_ESCAPE)) {
             glfwSetWindowShouldClose(window.getWindow(), true); // We will detect this in the rendering loop
         }
     }

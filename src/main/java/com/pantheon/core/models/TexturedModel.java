@@ -1,14 +1,19 @@
 package com.pantheon.core.models;
 
+import com.pantheon.core.buffers.BufferModel;
+
 public class TexturedModel {
     private RawModel rawModel;
     private int textureId;
     private float shineDamper = 1;
     private float reflectivity = 0;
+    private BufferModel bufferModel;
 
     public TexturedModel(int textureId, RawModel rawModel) {
         this.textureId = textureId;
         this.rawModel = rawModel;
+
+        this.bufferModel = new BufferModel(rawModel, textureId);
     }
 
     public int getTextureId() {
@@ -37,5 +42,13 @@ public class TexturedModel {
 
     public void setReflectivity(float reflectivity) {
         this.reflectivity = reflectivity;
+    }
+
+    public void cleanUp() {
+        this.bufferModel.cleanUp();
+    }
+
+    public int getVaoId() {
+        return bufferModel.getVaoId();
     }
 }

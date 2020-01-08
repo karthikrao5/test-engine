@@ -4,12 +4,12 @@ import com.pantheon.core.buffers.BufferModel;
 import org.joml.Vector3f;
 
 public class Entity {
-    private BufferModel model;
+    private TexturedModel model;
     private Vector3f position;
     private float rotX, rotY, rotZ;
     private float scale;
 
-    public Entity(BufferModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+    public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         this.model = model;
         this.position = position;
         this.rotX = rotX;
@@ -28,11 +28,11 @@ public class Entity {
         this.rotZ += rotation.z;
     }
 
-    public BufferModel getBufferModel() {
+    public TexturedModel getTexturedModel() {
         return model;
     }
 
-    public void setModel(BufferModel model) {
+    public void setTexturedModel(TexturedModel model) {
         this.model = model;
     }
 

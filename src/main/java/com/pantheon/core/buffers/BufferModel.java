@@ -15,26 +15,23 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
 public class BufferModel {
-    private TexturedModel texturedModel;
     private int vaoId;
     private Set<Integer> vbos = new HashSet<>();
     private Set<Integer> textures = new HashSet<>();
 
-    public BufferModel(TexturedModel texturedModel) {
-        this.texturedModel = texturedModel;
+    public BufferModel(RawModel rawModel, int textureId) {
         vaoId = glGenVertexArrays();
         glBindVertexArray(vaoId);
 
-        storeElementData(texturedModel.getRawModel().getTriangles());
-        storeDataInAttribute(0, 3, texturedModel.getRawModel().getVertices());
+        storeElementData(rawModel.getTriangles());
+        storeDataInAttribute(0, 3, rawModel.getVertices());
 
-        if (texturedModel.getTextureId() > 0) {
-            textures.add(texturedModel.getTextureId());
-            textures.add(texturedModel.getTextureId());
-            storeDataInAttribute(1, 2, texturedModel.getRawModel().getTextCoords());
+        if (textureId > 0) {
+            textures.add(textureId);
+            storeDataInAttribute(1, 2, rawModel.getTextCoords());
         }
 
-        storeDataInAttribute(2, 3, texturedModel.getRawModel().getNormals());
+        storeDataInAttribute(2, 3, rawModel.getNormals());
     }
 
     public void cleanUp() {
@@ -45,6 +42,10 @@ public class BufferModel {
             glDeleteTextures(textureId);
         }
         glDeleteBuffers(vaoId);
+    }
+
+    public int getVaoId() {
+        return vaoId;
     }
 
     private void storeElementData(int[] indices) {
@@ -79,17 +80,5 @@ public class BufferModel {
         glBufferData(GL_ARRAY_BUFFER, bufferData, GL_STATIC_DRAW);
         glVertexAttribPointer(attributeNumber, size, GL_FLOAT, false,  0, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-    }
-
-    public int getVaoId() {
-        return vaoId;
-    }
-
-    public TexturedModel getTexturedModel() {
-        return texturedModel;
-    }
-
-    public void setTexturedModel(TexturedModel texturedModel) {
-        this.texturedModel = texturedModel;
     }
 }

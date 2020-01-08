@@ -5,7 +5,7 @@ import com.pantheon.core.kernel.Light;
 import com.pantheon.core.utils.MathUtils;
 import org.joml.Matrix4f;
 
-public class BoxShader extends ShaderProgram {
+public class BaseShader extends ShaderProgram {
     private int location_transformationMatrix;
     private int location_projectionMatrix;
     private int location_viewMatrix;
@@ -14,7 +14,7 @@ public class BoxShader extends ShaderProgram {
     private int location_shineDamper;
     private int location_reflectivity;
 
-    public BoxShader() {
+    public BaseShader() {
         super("/shaders/vertex.glsl", "/shaders/frag.glsl");
     }
 
