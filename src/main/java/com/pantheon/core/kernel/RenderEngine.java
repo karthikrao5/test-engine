@@ -40,14 +40,11 @@ public class RenderEngine {
 
             for (int i = 0; i < 10; i++) {
                 float x = rand.nextFloat() * 100 - 50;
-                float y = rand.nextFloat() * 100 - 50;
+                float y = 0;
                 float z = rand.nextFloat() * -300;
 
                 Entity entity = new Entity(texturedModel,
-                        new Vector3f(x, y, z),
-                        rand.nextFloat() * 180f,
-                        rand.nextFloat() * 180f,
-                        0f, 1f);
+                        new Vector3f(x, y, z),0f,0f, 0f, 1f);
 
                 masterRenderer.processEntity(entity);
             }
@@ -58,20 +55,27 @@ public class RenderEngine {
 
         int terrainTextureId = ResourceLoader.importTextureFile("grass.png");
         System.out.println("Texture id in render engine: " + terrainTextureId);
-        Terrain terrain = new Terrain(0,0);
+        Terrain terrain = new Terrain(0,-1);
         TexturedModel texturedTerrain = new TexturedModel(terrainTextureId, terrain.getModel());
         texturedTerrain.setShineDamper(10f);
         texturedTerrain.setReflectivity(0.1f);
         terrain.setTexturedModel(texturedTerrain);
 
-        Terrain terrain2 = new Terrain(0, 1);
+        Terrain terrain2 = new Terrain(-1, -1);
         TexturedModel texturedTerrain2 = new TexturedModel(terrainTextureId, terrain2.getModel());
         texturedTerrain2.setShineDamper(10f);
         texturedTerrain2.setReflectivity(0.1f);
         terrain2.setTexturedModel(texturedTerrain2);
 
+        Terrain terrain3 = new Terrain(-1, 0);
+        TexturedModel texturedTerrain3 = new TexturedModel(terrainTextureId, terrain3.getModel());
+        texturedTerrain3.setShineDamper(10f);
+        texturedTerrain3.setReflectivity(0.1f);
+        terrain3.setTexturedModel(texturedTerrain3);
+
         masterRenderer.processTerrain(terrain);
         masterRenderer.processTerrain(terrain2);
+        masterRenderer.processTerrain(terrain3);
 
         camera = new Camera();
         light = new Light(new Vector3f(0f, 1000f, 0f), new Vector3f(1, 1, 1));

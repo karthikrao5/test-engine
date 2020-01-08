@@ -20,7 +20,7 @@ void main(void)
 {
     vec4 worldPosition = transformationMatrix * vec4(vertex_position, 1.0);
     gl_Position = projectionMatrix * viewMatrix * worldPosition;
-    pass_textCoords = textCoords;
+    pass_textCoords = textCoords * 40.0;
 
     surfaceNormal = (transformationMatrix * vec4(normal, 0.0)).xyz;
     toLightVector = lightPosition - worldPosition.xyz;

@@ -57,7 +57,7 @@ public class EntityRenderer {
             prepareTexturedModel(texturedModel);
             for (Entity entity : entities.get(texturedModel)) {
                 prepareInstance(entity);
-                entity.rotate(new Vector3f(0, -0.2f, 0));
+                entity.rotate(new Vector3f(0, 0.2f, 0));
                 glDrawElements(GL_TRIANGLES, entity.getTexturedModel().getRawModel().getTriangles().length, GL_UNSIGNED_INT, 0);
             }
 
