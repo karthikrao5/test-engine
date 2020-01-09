@@ -8,14 +8,16 @@ import org.lwjgl.BufferUtils;
 import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL32.GL_GEOMETRY_SHADER;
 
 public abstract class ShaderProgram {
     private int program;
-    private int vertexId;
-    private int fragId;
+    private int vertexShaderId;
+    private int fragmentShaderId;
+    private int geometryShaderId;
     private static FloatBuffer matBuffer = BufferUtils.createFloatBuffer(16);
 
-    public ShaderProgram(String vertexShaderFile, String fragShaderFile) {
+    public ShaderProgram(String vertexShaderFile, String fragShaderFile, String geometryShaderFile) {
         program = glCreateProgram();
         if (program == 0) {
             System.err.println("Unable to create shader program");
@@ -24,8 +26,11 @@ public abstract class ShaderProgram {
 
         bindAttributes();
 
-        this.vertexId = addShader(ResourceLoader.loadFileAsString(vertexShaderFile), GL_VERTEX_SHADER);
-        this.fragId = addShader(ResourceLoader.loadFileAsString(fragShaderFile), GL_FRAGMENT_SHADER);
+        this.vertexShaderId = addShader(ResourceLoader.loadFileAsString(vertexShaderFile), GL_VERTEX_SHADER);
+        this.fragmentShaderId = addShader(ResourceLoader.loadFileAsString(fragShaderFile), GL_FRAGMENT_SHADER);
+        if (!geometryShaderFile.isEmpty()) {
+            this.geometryShaderId = addShader(ResourceLoader.loadFileAsString(geometryShaderFile), GL_GEOMETRY_SHADER);
+        }
 
         compileShader();
         getAllUniformLocations();
@@ -99,11 +104,13 @@ public abstract class ShaderProgram {
 
     public void cleanUp() {
         stop();
-        glDetachShader(program, vertexId);
-        glDetachShader(program, fragId);
+        glDetachShader(program, vertexShaderId);
+        glDetachShader(program, fragmentShaderId);
+        glDetachShader(program, geometryShaderId);
 
-        glDeleteShader(vertexId);
-        glDeleteShader(fragId);
+        glDeleteShader(vertexShaderId);
+        glDeleteShader(fragmentShaderId);
+        glDeleteShader(geometryShaderId);
         glDeleteProgram(program);
     }
 

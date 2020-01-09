@@ -31,6 +31,7 @@ public class TerrainRenderer {
         for (Terrain terrain : terrains) {
             prepareTerrain(terrain.getTexturedModel());
             loadModelMatrix(terrain);
+            loadHeightScaleMatrix(terrain);
             glDrawElements(GL_TRIANGLES, terrain.getTexturedModel().getRawModel().getTriangles().length, GL_UNSIGNED_INT, 0);
 
             unbinedTexturedModel();
@@ -53,6 +54,13 @@ public class TerrainRenderer {
         glDisableVertexAttribArray(1);
         glDisableVertexAttribArray(2);
         glBindVertexArray(0);
+    }
+
+    private void loadHeightScaleMatrix(Terrain terrain) {
+        Matrix4f scale = new Matrix4f();
+        scale.identity();
+        scale._m11(10f);
+        shader.loadHeightScale(scale);
     }
 
     private void loadModelMatrix(Terrain terrain) {

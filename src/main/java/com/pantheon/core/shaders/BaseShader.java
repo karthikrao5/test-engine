@@ -15,7 +15,7 @@ public class BaseShader extends ShaderProgram {
     private int location_reflectivity;
 
     public BaseShader() {
-        super("/shaders/vertex.glsl", "/shaders/frag.glsl");
+        super("/shaders/vertex.glsl", "/shaders/frag.glsl", "");
     }
 
     @Override

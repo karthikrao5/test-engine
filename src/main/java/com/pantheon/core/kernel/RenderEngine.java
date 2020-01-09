@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeoutException;
 
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 
@@ -38,8 +39,8 @@ public class RenderEngine {
             texturedModel.setReflectivity(0.5f);
             texturedModel.setShineDamper(10);
 
-            for (int i = 0; i < 10; i++) {
-                float x = rand.nextFloat() * 100 - 50;
+            for (int i = 0; i < 100; i++) {
+                float x = rand.nextFloat() * 800 - 50;
                 float y = 0;
                 float z = rand.nextFloat() * -300;
 
@@ -53,24 +54,50 @@ public class RenderEngine {
             e.printStackTrace();
         }
 
-        int terrainTextureId = ResourceLoader.importTextureFile("grass.png");
+//        try {
+//            rawModel = OBJLoader.loadObj("/objs/grassModel.obj");
+//            TexturedModel texturedModel = new TexturedModel(
+//                    ResourceLoader.importTextureFile("grassTexture.png"), rawModel);
+//            texturedModel.setReflectivity(0.5f);
+//            texturedModel.setShineDamper(10);
+//
+//            for (int i = 0; i < 300; i++) {
+//                float x = rand.nextFloat() * 800 - 50;
+//                float y = 0;
+//                float z = rand.nextFloat() * -300;
+//
+//                Entity entity = new Entity(texturedModel,
+//                        new Vector3f(x, y, z),0f,0f, 0f, 1f);
+//
+//                masterRenderer.processEntity(entity);
+//            }
+//
+//        } catch (IOException e) {
+//            System.exit(1);
+//            e.printStackTrace();
+//        }
+
+        int terrainTextureId = ResourceLoader.importTextureFile("blue.png");
         System.out.println("Texture id in render engine: " + terrainTextureId);
         Terrain terrain = new Terrain(0,-1);
         TexturedModel texturedTerrain = new TexturedModel(terrainTextureId, terrain.getModel());
         texturedTerrain.setShineDamper(10f);
         texturedTerrain.setReflectivity(0.1f);
+        texturedTerrain.setHeightScale(20f);
         terrain.setTexturedModel(texturedTerrain);
 
         Terrain terrain2 = new Terrain(-1, -1);
         TexturedModel texturedTerrain2 = new TexturedModel(terrainTextureId, terrain2.getModel());
         texturedTerrain2.setShineDamper(10f);
         texturedTerrain2.setReflectivity(0.1f);
+        texturedTerrain2.setHeightScale(20f);
         terrain2.setTexturedModel(texturedTerrain2);
 
         Terrain terrain3 = new Terrain(-1, 0);
         TexturedModel texturedTerrain3 = new TexturedModel(terrainTextureId, terrain3.getModel());
         texturedTerrain3.setShineDamper(10f);
         texturedTerrain3.setReflectivity(0.1f);
+        texturedTerrain3.setHeightScale(20f);
         terrain3.setTexturedModel(texturedTerrain3);
 
         masterRenderer.processTerrain(terrain);
@@ -78,7 +105,7 @@ public class RenderEngine {
         masterRenderer.processTerrain(terrain3);
 
         camera = new Camera();
-        light = new Light(new Vector3f(0f, 1000f, 0f), new Vector3f(1, 1, 1));
+        light = new Light(new Vector3f(100f, 1000f, 0f), new Vector3f(1, 1, 1));
     }
 
     public void render() {

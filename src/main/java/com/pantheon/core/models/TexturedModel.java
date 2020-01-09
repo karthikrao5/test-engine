@@ -7,6 +7,7 @@ public class TexturedModel {
     private int textureId;
     private float shineDamper = 1;
     private float reflectivity = 0;
+    private float heightScale = 0;
     private BufferModel bufferModel;
 
     public TexturedModel(int textureId, RawModel rawModel) {
@@ -50,5 +51,13 @@ public class TexturedModel {
 
     public int getVaoId() {
         return bufferModel.getVaoId();
+    }
+
+    public float getHeightScale() {
+        return heightScale;
+    }
+
+    public void setHeightScale(float heightScale) {
+        this.heightScale = heightScale;
     }
 }

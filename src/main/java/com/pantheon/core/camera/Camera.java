@@ -14,23 +14,31 @@ public class Camera {
     }
 
     public void move() {
-        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_W)) {
+        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_UP)) {
             this.position.z -= 1.0f;
         }
-        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_D)) {
-            this.position.x += 1.0f;
-        }
-        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_A)) {
-            this.position.x -= 1.0f;
-        }
-        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_S)) {
+        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_DOWN)) {
             this.position.z += 1.0f;
         }
-        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_UP)) {
+        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_LEFT)) {
+            this.position.x -= 1.0f;
+        }
+        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_RIGHT)) {
+            this.position.x += 1.0f;
+        }
+
+
+        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_W)) {
             this.position.y += 1.0f;
         }
-        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_DOWN)) {
+        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_S)) {
             this.position.y -= 1.0f;
+        }
+        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_A)) {
+            this.pitch += 1.0f;
+        }
+        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_D)) {
+            this.pitch -= 1.0f;
         }
     }
 

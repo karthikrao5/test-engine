@@ -13,9 +13,12 @@ public class TerrainShader extends ShaderProgram {
     private int location_lightColor;
     private int location_shineDamper;
     private int location_reflectivity;
+    private int location_heightScale;
 
     public TerrainShader() {
-        super("/shaders/terrainVertex.glsl", "/shaders/terrainFrag.glsl");
+        super("/shaders/terrainVertex.glsl",
+                "/shaders/terrainFrag.glsl",
+                "/shaders/terrainGeometry.glsl");
     }
 
     @Override
@@ -34,8 +37,11 @@ public class TerrainShader extends ShaderProgram {
         location_lightColor = super.getUniformLocation("lightColor");
         location_shineDamper = super.getUniformLocation("shineDamper");
         location_reflectivity = super.getUniformLocation("reflectivity");
+        location_heightScale = super.getUniformLocation("heightScale");
+    }
 
-        System.out.printf("trans: %d, proj: %d, view: %d \n", location_transformationMatrix, location_projectionMatrix, location_viewMatrix);
+    public void loadHeightScale(Matrix4f matrix) {
+        super.loadMatrix(location_heightScale, matrix);
     }
 
     public void loadTransformationMatrix(Matrix4f matrix) {

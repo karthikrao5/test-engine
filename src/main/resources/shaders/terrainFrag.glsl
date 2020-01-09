@@ -1,6 +1,7 @@
 #version 330 core
 
 in vec2 pass_textCoords;
+in vec3 normal_out;
 in vec3 surfaceNormal;
 in vec3 toLightVector;
 in vec3 toCameraVector;
@@ -10,14 +11,13 @@ out vec4 out_Color;
 uniform sampler2D textureSampler;
 uniform vec3 lightColor;
 
-
 //how close the camera is to the reflected light to see a difference
 uniform float shineDamper;
 uniform float reflectivity;
 
 void main(void)
 {
-    vec3 unitNormal = normalize(surfaceNormal);
+    vec3 unitNormal = normalize(normal_out);
     vec3 unitLightVector = normalize(toLightVector);
 
     vec3 unitToCameraVector = normalize(toCameraVector);

@@ -1,12 +1,10 @@
 package com.pantheon.core.renderer;
 
-import com.pantheon.core.kernel.Window;
 import com.pantheon.core.models.Entity;
 import com.pantheon.core.models.TexturedModel;
 import com.pantheon.core.shaders.BaseShader;
 import com.pantheon.core.utils.MathUtils;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.Map;
@@ -57,7 +55,6 @@ public class EntityRenderer {
             prepareTexturedModel(texturedModel);
             for (Entity entity : entities.get(texturedModel)) {
                 prepareInstance(entity);
-                entity.rotate(new Vector3f(0, 0.2f, 0));
                 glDrawElements(GL_TRIANGLES, entity.getTexturedModel().getRawModel().getTriangles().length, GL_UNSIGNED_INT, 0);
             }
 
