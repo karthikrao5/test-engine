@@ -121,7 +121,7 @@ public class Window {
         return height;
     }
 
-    public long getWindow() {
+    public long getWindowId() {
         return window;
     }
 }

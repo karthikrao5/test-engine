@@ -77,35 +77,43 @@ public class RenderEngine {
 //            e.printStackTrace();
 //        }
 
-        int terrainTextureId = ResourceLoader.importTextureFile("blue.png");
+        int terrainTextureId = ResourceLoader.importTextureFile("grass.png");
         System.out.println("Texture id in render engine: " + terrainTextureId);
-        Terrain terrain = new Terrain(0,-1);
+        Terrain terrain = new Terrain(0,0);
         TexturedModel texturedTerrain = new TexturedModel(terrainTextureId, terrain.getModel());
         texturedTerrain.setShineDamper(10f);
         texturedTerrain.setReflectivity(0.1f);
         texturedTerrain.setHeightScale(20f);
         terrain.setTexturedModel(texturedTerrain);
 
-        Terrain terrain2 = new Terrain(-1, -1);
+        Terrain terrain2 = new Terrain(-1, 0);
         TexturedModel texturedTerrain2 = new TexturedModel(terrainTextureId, terrain2.getModel());
         texturedTerrain2.setShineDamper(10f);
         texturedTerrain2.setReflectivity(0.1f);
         texturedTerrain2.setHeightScale(20f);
         terrain2.setTexturedModel(texturedTerrain2);
 
-        Terrain terrain3 = new Terrain(-1, 0);
+        Terrain terrain3 = new Terrain(-1, -1);
         TexturedModel texturedTerrain3 = new TexturedModel(terrainTextureId, terrain3.getModel());
         texturedTerrain3.setShineDamper(10f);
         texturedTerrain3.setReflectivity(0.1f);
         texturedTerrain3.setHeightScale(20f);
         terrain3.setTexturedModel(texturedTerrain3);
 
+        Terrain terrain4 = new Terrain(0, -1);
+        TexturedModel texturedTerrain4 = new TexturedModel(terrainTextureId, terrain4.getModel());
+        texturedTerrain4.setShineDamper(10f);
+        texturedTerrain4.setReflectivity(0.1f);
+        texturedTerrain4.setHeightScale(20f);
+        terrain4.setTexturedModel(texturedTerrain4);
+
         masterRenderer.processTerrain(terrain);
         masterRenderer.processTerrain(terrain2);
         masterRenderer.processTerrain(terrain3);
+        masterRenderer.processTerrain(terrain4);
 
         camera = new Camera(new Vector3f(0f, 100f, 0f));
-        light = new Light(new Vector3f(-200, 500f, -200f), new Vector3f(1, 1, 1));
+        light = new Light(new Vector3f(100f, 500f, 100f), new Vector3f(1, 1, 1));
         angle = 0.0;
     }
 
@@ -113,10 +121,13 @@ public class RenderEngine {
         if (angle >= 360.0) {
             angle = 0.0;
         }
-        System.out.println(String.format("position: %s and angle: %f", light.getPosition().toString(), angle));
-        light.setPosition(new Vector3f(light.getPosition().x += 100f* (float) Math.cos(Math.toRadians(angle)), light.getPosition().y, light.getPosition().z += 100f* (float) Math.sin(Math.toRadians(angle))));
+        light.setPosition(new Vector3f(
+                light.getPosition().x -= 5f* (float) Math.cos(Math.toRadians(angle)),
+                light.getPosition().y,
+                light.getPosition().z -= 5f* (float) Math.sin(Math.toRadians(angle))));
+
+        angle += 1.0;
         masterRenderer.render(light, camera);
-        angle += 0.5;
 
         //swap buffers
         window.render();
@@ -130,7 +141,7 @@ public class RenderEngine {
         camera.move();
 
         if (Input.getInstance().isKeyPushed(GLFW.GLFW_KEY_ESCAPE)) {
-            glfwSetWindowShouldClose(window.getWindow(), true); // We will detect this in the rendering loop
+            glfwSetWindowShouldClose(window.getWindowId(), true); // We will detect this in the rendering loop
         }
     }
 }

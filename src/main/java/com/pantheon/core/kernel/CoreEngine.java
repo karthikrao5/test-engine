@@ -104,6 +104,7 @@ public class CoreEngine {
     }
 
     private void update() {
+        Input.getInstance().input();
         Input.getInstance().update();
         renderEngine.update();
     }
@@ -117,6 +118,6 @@ public class CoreEngine {
     }
 
     public void init() {
-
+        Input.getInstance().init(Window.getInstance());
     }
 }
