@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeoutException;
 
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 
@@ -23,6 +22,7 @@ public class RenderEngine {
     private Camera camera;
     private Light light;
     private MasterRenderer masterRenderer;
+    private double angle;
 
     public RenderEngine() {
         window = Window.getInstance();
@@ -104,12 +104,19 @@ public class RenderEngine {
         masterRenderer.processTerrain(terrain2);
         masterRenderer.processTerrain(terrain3);
 
-        camera = new Camera();
-        light = new Light(new Vector3f(100f, 1000f, 0f), new Vector3f(1, 1, 1));
+        camera = new Camera(new Vector3f(0f, 100f, 0f));
+        light = new Light(new Vector3f(-200, 500f, -200f), new Vector3f(1, 1, 1));
+        angle = 0.0;
     }
 
     public void render() {
+        if (angle >= 360.0) {
+            angle = 0.0;
+        }
+        System.out.println(String.format("position: %s and angle: %f", light.getPosition().toString(), angle));
+        light.setPosition(new Vector3f(light.getPosition().x += 100f* (float) Math.cos(Math.toRadians(angle)), light.getPosition().y, light.getPosition().z += 100f* (float) Math.sin(Math.toRadians(angle))));
         masterRenderer.render(light, camera);
+        angle += 0.5;
 
         //swap buffers
         window.render();

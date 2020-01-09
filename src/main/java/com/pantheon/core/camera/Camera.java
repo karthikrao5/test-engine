@@ -1,16 +1,20 @@
 package com.pantheon.core.camera;
 
 import com.pantheon.core.kernel.Input;
-import com.pantheon.core.kernel.Window;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 public class Camera {
 
-    private Vector3f position = new Vector3f(0,0,0);
+    private Vector3f position;
     private float pitch = 0f, yaw = 0f, roll = 0f;
 
     public Camera() {
+        this.position = new Vector3f(0,0,0);
+    }
+
+    public Camera(Vector3f position) {
+        this.position = position;
     }
 
     public void move() {

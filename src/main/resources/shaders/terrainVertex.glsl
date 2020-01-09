@@ -5,8 +5,6 @@ in vec2 textCoords;
 
 out vec2 pass_textCoords;
 out vec3 toLightVector;
-
-out vec3 reflectedLightVector;
 out vec3 toCameraVector;
 
 uniform mat4 projectionMatrix;
