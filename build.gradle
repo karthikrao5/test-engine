@@ -50,6 +50,7 @@ dependencies {
 
 	compile group: 'org.joml', name: 'joml', version: '1.9.19'
 	compile group: 'org.l33tlabs.twl', name: 'pngdecoder', version: '1.0'
+	compile group: 'org.j3d', name: 'j3d-texture', version: '3.0.1'
 
 	implementation "org.lwjgl:lwjgl"
 	implementation "org.lwjgl:lwjgl-assimp"

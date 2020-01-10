@@ -16,23 +16,24 @@ uniform float reflectivity;
 
 void main(void)
 {
-    vec3 unitNormal = normalize(normal_out);
-    vec3 unitLightVector = normalize(toLightVectorFS);
+//    vec3 unitNormal = normalize(normal_out);
+//    vec3 unitLightVector = normalize(toLightVectorFS);
+//
+//    vec3 unitToCameraVector = normalize(toCameraVectorFS);
+//    vec3 lightDirection = -unitLightVector;
+//
+//    vec3 reflectedLightUnitVector = reflect(lightDirection, unitNormal);
+//    float specularFactor = dot(reflectedLightUnitVector, unitToCameraVector);
+//    specularFactor = max(specularFactor, 0.2);
+//
+//    float dampedFactor = pow(specularFactor, shineDamper);
+//
+//    vec3 finalSpecularValue = dampedFactor * reflectivity * lightColor;
+//
+//    float ndot = dot(unitNormal, unitLightVector);
+//    float brightness = max(ndot, 0.2);
+//    vec3 diffuse = brightness * lightColor;
 
-    vec3 unitToCameraVector = normalize(toCameraVectorFS);
-    vec3 lightDirection = -unitLightVector;
-
-    vec3 reflectedLightUnitVector = reflect(lightDirection, unitNormal);
-    float specularFactor = dot(reflectedLightUnitVector, unitToCameraVector);
-    specularFactor = max(specularFactor, 0.2);
-
-    float dampedFactor = pow(specularFactor, shineDamper);
-
-    vec3 finalSpecularValue = dampedFactor * reflectivity * lightColor;
-
-    float ndot = dot(unitNormal, unitLightVector);
-    float brightness = max(ndot, 0.2);
-    vec3 diffuse = brightness * lightColor;
-
-    out_Color = vec4(diffuse, 1.0) * texture(textureSampler, pass_textCoordsFS) + vec4(finalSpecularValue, 1.0);
+//    out_Color = vec4(diffuse, 1.0) * texture(textureSampler, pass_textCoordsFS) + vec4(finalSpecularValue, 1.0);
+    out_Color = texture(textureSampler, pass_textCoordsFS);
 }

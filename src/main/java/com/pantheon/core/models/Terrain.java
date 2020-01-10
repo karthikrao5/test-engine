@@ -1,10 +1,6 @@
 package com.pantheon.core.models;
 
-import org.lwjgl.stb.STBPerlin;
-
-import java.util.Random;
-
-import static org.lwjgl.stb.STBPerlin.stb_perlin_noise3;
+import org.j3d.texture.procedural.PerlinNoiseGenerator;
 
 public class Terrain {
     private int SIZE = 800;
@@ -15,11 +11,25 @@ public class Terrain {
     private RawModel model;
     private TexturedModel texturedModel;
 
+    private PerlinNoiseGenerator generator;
+    private final float FREQ_CHANGE_AMOUNT = 0.01f;
+
+    private float freq;
+    private float prevFreq;
+
+    private int octaves;
+    private int prevOctaves;
+
     public Terrain(float gridX, float gridZ) {
         this.x = gridX * SIZE;
         this.z = gridZ * SIZE;
+        generator = new PerlinNoiseGenerator(12);
 
-        generateTerrain();
+        freq = 0.1f;
+        octaves = 1;
+
+        prevFreq = 0.0f;
+        prevOctaves = 0;
     }
 
     public void setTexturedModel(TexturedModel texturedModel) {
@@ -30,6 +40,25 @@ public class Terrain {
         return texturedModel;
     }
 
+    public void incrementFreq() {
+        this.freq += FREQ_CHANGE_AMOUNT;
+    }
+
+    public void decrementFreq() {
+        this.freq -= FREQ_CHANGE_AMOUNT;
+    }
+
+    public void incrementOctaves() {
+        this.octaves++;
+    }
+
+    public void decrementOctaves() {
+        this.octaves--;
+        if (this.octaves < 0) {
+            this.octaves = 0;
+        }
+    }
+
     public float getX() {
         return x;
     }
@@ -38,8 +67,7 @@ public class Terrain {
         return z;
     }
 
-    private void generateTerrain() {
-        Random rand = new Random();
+    private void generate() {
         int count = VERTEX_COUNT * VERTEX_COUNT;
         float[] vertices = new float[count * 3];
         float[] textCoords = new float[count * 2];
@@ -49,9 +77,22 @@ public class Terrain {
         int vertexPointer = 0;
         for (int i = 0; i < VERTEX_COUNT; i++) {
             for (int j = 0; j < VERTEX_COUNT; j++) {
-                vertices[vertexPointer * 3] = (float) j / ((float) VERTEX_COUNT - 1) * SIZE;
-                vertices[vertexPointer * 3 + 1] = stb_perlin_noise3( (float) j / ((float) VERTEX_COUNT - 1) * SIZE, 0.5f, (float) i / ((float) VERTEX_COUNT - 1) * SIZE, 0,0,0);
-                vertices[vertexPointer * 3 + 2] = (float) i / ((float) VERTEX_COUNT - 1) * SIZE;
+                float x = (float) j / ((float) VERTEX_COUNT - 1) * SIZE;
+                float z = (float) i / ((float) VERTEX_COUNT - 1) * SIZE;
+                vertices[vertexPointer * 3] = x;
+
+                float yNoise = 0.0f;
+
+                float freqOffset = 1.0f;
+                for (int o = 0; o < octaves; o++) {
+                    yNoise += generator.noise2(freqOffset * freq * x, freqOffset * freq * z);
+                    freqOffset += 2.0f;
+                }
+
+                vertices[vertexPointer * 3 + 1] = yNoise;
+
+                vertices[vertexPointer * 3 + 2] = z;
+
                 textCoords[vertexPointer * 2] = (float) j / ((float) VERTEX_COUNT - 1);
                 textCoords[vertexPointer * 2 + 1] = (float) i / ((float) VERTEX_COUNT - 1);
                 vertexPointer++;
@@ -59,11 +100,11 @@ public class Terrain {
         }
 
         int pointer = 0;
-        for(int gz=0;gz<VERTEX_COUNT-1;gz++){
-            for(int gx=0;gx<VERTEX_COUNT-1;gx++){
-                int topLeft = (gz*VERTEX_COUNT)+gx;
+        for (int gz = 0; gz < VERTEX_COUNT - 1; gz++) {
+            for (int gx = 0; gx < VERTEX_COUNT - 1; gx++) {
+                int topLeft = (gz * VERTEX_COUNT) + gx;
                 int topRight = topLeft + 1;
-                int bottomLeft = ((gz+1)*VERTEX_COUNT)+gx;
+                int bottomLeft = ((gz + 1) * VERTEX_COUNT) + gx;
                 int bottomRight = bottomLeft + 1;
                 triangles[pointer++] = topLeft;
                 triangles[pointer++] = bottomLeft;
@@ -74,7 +115,24 @@ public class Terrain {
             }
         }
 
-        this.model = new RawModel(vertices, triangles, textCoords, normals);
+        if (this.model != null) {
+            this.model.setVertices(vertices);
+            this.model.setTriangles(triangles);
+        } else {
+            this.model = new RawModel(vertices, triangles, textCoords, normals);
+        }
+    }
+
+    public void generateTerrain() {
+        if (freq != prevFreq || octaves != prevOctaves) {
+            System.out.println(String.format("Octaves: %d | Freq: %f", octaves, freq));
+            generate();
+            if (texturedModel != null) {
+                texturedModel.updateModelData(this.model);
+            }
+            prevFreq = freq;
+            prevOctaves = octaves;
+        }
     }
 
     public RawModel getModel() {

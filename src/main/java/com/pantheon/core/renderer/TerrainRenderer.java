@@ -1,11 +1,13 @@
 package com.pantheon.core.renderer;
 
+import com.pantheon.core.kernel.Input;
 import com.pantheon.core.models.Terrain;
 import com.pantheon.core.models.TexturedModel;
 import com.pantheon.core.shaders.TerrainShader;
 import com.pantheon.core.utils.MathUtils;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 
@@ -29,11 +31,17 @@ public class TerrainRenderer {
 
     public void render(List<Terrain> terrains) {
         for (Terrain terrain : terrains) {
+            terrain.generateTerrain();
+
             prepareTerrain(terrain.getTexturedModel());
             loadModelMatrix(terrain);
             loadHeightScaleMatrix(terrain);
+
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
             glDrawElements(GL_TRIANGLES, terrain.getTexturedModel().getRawModel().getTriangles().length, GL_UNSIGNED_INT, 0);
 
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             unbinedTexturedModel();
         }
     }
@@ -45,8 +53,8 @@ public class TerrainRenderer {
         glEnableVertexAttribArray(2);
 
         shader.loadShineVariables(model.getShineDamper(), model.getReflectivity());
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, model.getTextureId());
+//        glActiveTexture(GL_TEXTURE0);
+//        glBindTexture(GL_TEXTURE_2D, model.getTextureId());
     }
 
     private void unbinedTexturedModel() {
@@ -68,5 +76,31 @@ public class TerrainRenderer {
                 new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0, 0, 1);
 
         shader.loadTransformationMatrix(transform);
+    }
+
+    public void update(List<Terrain> terrains) {
+        if (Input.getInstance().isKeyPushed(GLFW.GLFW_KEY_F)) {
+            for(Terrain terrain : terrains) {
+                terrain.incrementFreq();
+            }
+        }
+
+        if (Input.getInstance().isKeyPushed(GLFW.GLFW_KEY_G)) {
+            for(Terrain terrain : terrains) {
+                terrain.decrementFreq();
+            }
+        }
+
+        if (Input.getInstance().isKeyPushed(GLFW.GLFW_KEY_O)) {
+            for(Terrain terrain : terrains) {
+                terrain.incrementOctaves();
+            }
+        }
+
+        if (Input.getInstance().isKeyPushed(GLFW.GLFW_KEY_P)) {
+            for(Terrain terrain : terrains) {
+                terrain.decrementOctaves();
+            }
+        }
     }
 }

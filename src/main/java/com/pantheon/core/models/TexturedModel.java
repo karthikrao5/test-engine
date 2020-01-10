@@ -17,6 +17,10 @@ public class TexturedModel {
         this.bufferModel = new BufferModel(rawModel, textureId);
     }
 
+    public void updateModelData(RawModel model) {
+        this.bufferModel.updateVerticesAndTriangleData(model.getVertices(), model.getTriangles());
+    }
+
     public int getTextureId() {
         return textureId;
     }

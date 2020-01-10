@@ -2,11 +2,14 @@ package com.pantheon.core.kernel;
 
 import com.pantheon.core.camera.Camera;
 import com.pantheon.core.models.Entity;
+import com.pantheon.core.models.Image;
 import com.pantheon.core.models.Terrain;
 import com.pantheon.core.models.TexturedModel;
 import com.pantheon.core.renderer.EntityRenderer;
+import com.pantheon.core.renderer.ImageRenderer;
 import com.pantheon.core.renderer.TerrainRenderer;
 import com.pantheon.core.shaders.BaseShader;
+import com.pantheon.core.shaders.ImageShader;
 import com.pantheon.core.shaders.TerrainShader;
 import org.joml.Matrix4f;
 
@@ -26,11 +29,15 @@ public class MasterRenderer {
 
     private BaseShader entityShader;
     private TerrainShader terrainShader;
+    private ImageShader imageShader;
 
     private EntityRenderer entityRenderer;
     private TerrainRenderer terrainRenderer;
+    private ImageRenderer imageRenderer;
+
     private Map<TexturedModel, List<Entity>> entityMap;
     private List<Terrain> terrains;
+    private List<Image> images;
 
     public MasterRenderer() {
         glEnable(GL_CULL_FACE);
@@ -40,12 +47,15 @@ public class MasterRenderer {
 
         this.entityShader = new BaseShader();
         this.terrainShader = new TerrainShader();
+        this.imageShader = new ImageShader();
 
         this.entityRenderer = new EntityRenderer(entityShader, projectionMatrix);
         this.terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
+        this.imageRenderer = new ImageRenderer(imageShader, projectionMatrix);
 
         this.entityMap = new HashMap<>();
         this.terrains = new ArrayList<>();
+        this.images = new ArrayList<>();
     }
 
     public void render(Light light, Camera camera) {
@@ -61,6 +71,20 @@ public class MasterRenderer {
         terrainShader.loadLight(light);
         terrainRenderer.render(terrains);
         terrainShader.stop();
+
+        imageShader.start();
+        imageShader.loadViewMatrix(camera);
+        imageRenderer.render(images);
+        imageShader.stop();
+    }
+
+    public void update() {
+        entityRenderer.update();
+        terrainRenderer.update(terrains);
+    }
+
+    public void processImage(Image image) {
+        images.add(image);
     }
 
     public void processEntity(Entity entity) {

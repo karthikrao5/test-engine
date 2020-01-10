@@ -42,7 +42,6 @@ public class Camera {
         // Update camera based on mouse
         if (Input.getInstance().isRightButtonPressed()) {
             Vector2f rotVec = Input.getInstance().getDisplVec();
-            System.out.println(rotVec);
             moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
         }
     }

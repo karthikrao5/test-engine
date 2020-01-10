@@ -26,30 +26,6 @@ public class EntityRenderer {
         shader.stop();
     }
 
-    /**
-     * Debug purposes only
-     */
-    public void render(Entity entity, BaseShader shader) {
-        glBindVertexArray(entity.getTexturedModel().getVaoId());
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
-
-        Matrix4f transform = MathUtils.createTransformationMatrix(
-                entity.getPosition(), entity.getRotX(), entity.getRotY(),
-                entity.getRotZ(), entity.getScale());
-
-        shader.loadTransformationMatrix(transform);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, entity.getTexturedModel().getTextureId());
-        glDrawElements(GL_TRIANGLES, entity.getTexturedModel().getRawModel().getTriangles().length, GL_UNSIGNED_INT, 0);
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(2);
-        glBindVertexArray(0);
-    }
-
     public void render(Map<TexturedModel, List<Entity>> entities) {
         for (TexturedModel texturedModel : entities.keySet()) {
             prepareTexturedModel(texturedModel);
@@ -86,5 +62,9 @@ public class EntityRenderer {
                 entity.getRotZ(), entity.getScale());
 
         shader.loadTransformationMatrix(transform);
+    }
+
+    public void update() {
+
     }
 }
