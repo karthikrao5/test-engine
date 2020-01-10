@@ -31,7 +31,7 @@ void main(void)
     vec3 finalSpecularValue = dampedFactor * reflectivity * lightColor;
 
     float ndot = dot(unitNormal, unitLightVector);
-    float brightness = max(ndot, 0.0);
+    float brightness = max(ndot, 0.2);
     vec3 diffuse = brightness * lightColor;
 
     out_Color = vec4(diffuse, 1.0) * texture(textureSampler, pass_textCoordsFS) + vec4(finalSpecularValue, 1.0);

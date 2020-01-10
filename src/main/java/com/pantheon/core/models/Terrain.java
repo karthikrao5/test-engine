@@ -1,12 +1,14 @@
 package com.pantheon.core.models;
 
-import com.pantheon.core.utils.ResourceLoader;
+import org.lwjgl.stb.STBPerlin;
 
 import java.util.Random;
 
+import static org.lwjgl.stb.STBPerlin.stb_perlin_noise3;
+
 public class Terrain {
     private int SIZE = 800;
-    private int VERTEX_COUNT = 128;
+    private int VERTEX_COUNT = 256;
 
     private float x;
     private float z;
@@ -48,7 +50,7 @@ public class Terrain {
         for (int i = 0; i < VERTEX_COUNT; i++) {
             for (int j = 0; j < VERTEX_COUNT; j++) {
                 vertices[vertexPointer * 3] = (float) j / ((float) VERTEX_COUNT - 1) * SIZE;
-                vertices[vertexPointer * 3 + 1] = rand.nextFloat();
+                vertices[vertexPointer * 3 + 1] = stb_perlin_noise3( (float) j / ((float) VERTEX_COUNT - 1) * SIZE, 0.5f, (float) i / ((float) VERTEX_COUNT - 1) * SIZE, 0,0,0);
                 vertices[vertexPointer * 3 + 2] = (float) i / ((float) VERTEX_COUNT - 1) * SIZE;
                 textCoords[vertexPointer * 2] = (float) j / ((float) VERTEX_COUNT - 1);
                 textCoords[vertexPointer * 2 + 1] = (float) i / ((float) VERTEX_COUNT - 1);
