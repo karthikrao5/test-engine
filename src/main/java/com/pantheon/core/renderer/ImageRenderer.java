@@ -5,7 +5,9 @@ import com.pantheon.core.shaders.BaseShader;
 import com.pantheon.core.shaders.ImageShader;
 import com.pantheon.core.utils.MathUtils;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -34,8 +36,7 @@ public class ImageRenderer {
             glEnableVertexAttribArray(2);
 
             Matrix4f transform = MathUtils.createTransformationMatrix(
-                    image.getPosition(), image.getRotation().x, image.getRotation().y,
-                    image.getRotation().z, 1f);
+                    new Vector3f(0,0,0), 0, 0, 0, 1f);
 
             shader.loadTransformationMatrix(transform);
 

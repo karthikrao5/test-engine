@@ -9,6 +9,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
+import java.nio.IntBuffer;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -79,25 +80,26 @@ public class TerrainRenderer {
     }
 
     public void update(List<Terrain> terrains) {
-        if (Input.getInstance().isKeyPushed(GLFW.GLFW_KEY_F)) {
+        Input input = Input.getInstance();
+        if (input.isKeyPushed(GLFW.GLFW_KEY_F) || input.isKeyPushed(GLFW.GLFW_KEY_F)) {
             for(Terrain terrain : terrains) {
                 terrain.incrementFreq();
             }
         }
 
-        if (Input.getInstance().isKeyPushed(GLFW.GLFW_KEY_G)) {
+        if (input.isKeyPushed(GLFW.GLFW_KEY_G) || input.isKeyPushed(GLFW.GLFW_KEY_G)) {
             for(Terrain terrain : terrains) {
                 terrain.decrementFreq();
             }
         }
 
-        if (Input.getInstance().isKeyPushed(GLFW.GLFW_KEY_O)) {
+        if (input.isKeyPushed(GLFW.GLFW_KEY_O)  || input.isKeyPushed(GLFW.GLFW_KEY_O)) {
             for(Terrain terrain : terrains) {
                 terrain.incrementOctaves();
             }
         }
 
-        if (Input.getInstance().isKeyPushed(GLFW.GLFW_KEY_P)) {
+        if (input.isKeyPushed(GLFW.GLFW_KEY_P) || input.isKeyPushed(GLFW.GLFW_KEY_P)) {
             for(Terrain terrain : terrains) {
                 terrain.decrementOctaves();
             }

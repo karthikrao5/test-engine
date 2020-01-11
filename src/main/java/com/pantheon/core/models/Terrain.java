@@ -46,6 +46,9 @@ public class Terrain {
 
     public void decrementFreq() {
         this.freq -= FREQ_CHANGE_AMOUNT;
+        if (this.freq < 0) {
+            this.freq = 0.0f;
+        }
     }
 
     public void incrementOctaves() {

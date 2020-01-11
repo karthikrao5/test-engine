@@ -16,8 +16,6 @@ public class ImageShader extends ShaderProgram {
     @Override
     protected void bindAttributes() {
         this.bindAttribute(0, "position");
-        this.bindAttribute(1, "textureCoords");
-        this.bindAttribute(2, "normal");
     }
 
     @Override

@@ -30,32 +30,32 @@ public class RenderEngine {
         Random rand = new Random();
 
         RawModel rawModel;
-//        try {
-//            rawModel = OBJLoader.loadObj("/objs/dragon.obj");
-//            TexturedModel texturedModel = new TexturedModel(
-//                    ResourceLoader.importTextureFile("blue.png"), rawModel);
-//            texturedModel.setReflectivity(0.5f);
-//            texturedModel.setShineDamper(10);
+        try {
+            rawModel = OBJLoader.loadObj("/objs/dragon.obj");
+            TexturedModel texturedModel = new TexturedModel(
+                    ResourceLoader.importTextureFile("blue.png"), rawModel);
+            texturedModel.setReflectivity(0.5f);
+            texturedModel.setShineDamper(10);
+
+//            for (int i = 0; i < 100; i++) {
+//                float x = rand.nextFloat() * 800 - 50;
+//                float y = 0;
+//                float z = rand.nextFloat() * -300;
 //
-////            for (int i = 0; i < 100; i++) {
-////                float x = rand.nextFloat() * 800 - 50;
-////                float y = 0;
-////                float z = rand.nextFloat() * -300;
-////
-////                Entity entity = new Entity(texturedModel,
-////                        new Vector3f(x, y, z),0f,0f, 0f, 1f);
-////
-////                masterRenderer.processEntity(entity);
-////            }
+//                Entity entity = new Entity(texturedModel,
+//                        new Vector3f(x, y, z),0f,0f, 0f, 1f);
 //
-//            Entity entity = new Entity(texturedModel,
-//                    new Vector3f(0, 0, 0),0f,0f, 0f, 1f);
-//
-//            masterRenderer.processEntity(entity);
-//        } catch (IOException e) {
-//            System.exit(1);
-//            e.printStackTrace();
-//        }
+//                masterRenderer.processEntity(entity);
+//            }
+
+            Entity entity = new Entity(texturedModel,
+                    new Vector3f(0, 0, 0),0f,0f, 0f, 1f);
+
+            masterRenderer.processEntity(entity);
+        } catch (IOException e) {
+            System.exit(1);
+            e.printStackTrace();
+        }
 
 //        try {
 //            rawModel = OBJLoader.loadObj("/objs/grassModel.obj");
@@ -89,7 +89,7 @@ public class RenderEngine {
 //        texturedTerrain.setHeightScale(20f);
 //        terrain.setTexturedModel(texturedTerrain);
 //
-        Terrain terrain2 = new Terrain(0, 0);
+        Terrain terrain2 = new Terrain(-0.5f, -1);
         terrain2.generateTerrain();
         TexturedModel texturedTerrain2 = new TexturedModel(terrainTextureId, terrain2.getModel());
         texturedTerrain2.setShineDamper(10f);
@@ -138,9 +138,11 @@ public class RenderEngine {
         RawModel rawImage = new RawModel(vertices, triangles, textures, new float[1]);
 
         Image perlinImage = new Image(rawImage);
+        perlinImage.setPosition(new Vector3f(0,0,0));
+        perlinImage.setRotation(new Vector3f(0,0,0));
         masterRenderer.processImage(perlinImage);
 
-        camera = new Camera(new Vector3f(0f, 100f, 0f));
+        camera = new Camera(new Vector3f(0f, 0f, 0f));
         light = new Light(new Vector3f(100f, 500f, 100f), new Vector3f(1, 1, 1));
         angle = 0.0;
     }
