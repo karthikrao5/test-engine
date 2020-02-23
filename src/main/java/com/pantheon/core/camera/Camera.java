@@ -12,7 +12,7 @@ public class Camera {
     private float pitch = 0f, yaw = 0f, roll = 0f;
 
     public Camera() {
-        this.position = new Vector3f(0,0,0);
+        this.position = new Vector3f(0, 0, 0);
     }
 
     public Camera(Vector3f position) {
@@ -20,23 +20,29 @@ public class Camera {
     }
 
     public void move() {
-        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_S)) {
-            this.position.z += 1.0f;
-        }
-        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_W)) {
-            this.position.z -= 1.0f;
-        }
-        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_A)) {
-            this.position.x -= 1.0f;
-        }
-        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_D)) {
-            this.position.x += 1.0f;
-        }
+//        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_A)) {
+//            this.position.z += 1.0f;
+//        }
+//        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_D)) {
+//            this.position.z -= 1.0f;
+//        }
         if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_Z)) {
             this.position.y += 1.0f;
         }
         if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_X)) {
             this.position.y -= 1.0f;
+        }
+
+        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_W)) {
+            this.position.x += Math.sin(Math.toRadians(yaw)) * MOUSE_SENSITIVITY;
+            this.position.z -= Math.cos(Math.toRadians(yaw)) * MOUSE_SENSITIVITY;
+            this.position.y -= Math.sin(Math.toRadians(pitch)) * MOUSE_SENSITIVITY;
+        }
+
+        if (Input.getInstance().isKeyHolding(GLFW.GLFW_KEY_S)) {
+            this.position.x -= Math.sin(Math.toRadians(yaw)) * MOUSE_SENSITIVITY;
+            this.position.z += Math.cos(Math.toRadians(yaw)) * MOUSE_SENSITIVITY;
+            this.position.y += Math.sin(Math.toRadians(pitch)) * MOUSE_SENSITIVITY;
         }
 
         // Update camera based on mouse
