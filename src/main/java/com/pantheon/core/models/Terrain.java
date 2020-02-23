@@ -12,10 +12,18 @@ public class Terrain {
     private TexturedModel texturedModel;
 
     private PerlinNoiseGenerator generator;
-    private final float FREQ_CHANGE_AMOUNT = 10f;
+    private final float DELTA_SCALE = 0.1f;
+    private final float LAC_CHANGE_AMOUNT = 0.1f;
+    private final float PERSISTANCE_CHANGE_AMOUNT = 0.01f;
 
-    private float freq;
-    private float prevFreq;
+    private float scale;
+    private float prevScale;
+
+    private float lacunarity;
+    private float prevLacunarity;
+
+    private float persistence;
+    private float prevPersistence;
 
     private int octaves;
     private int prevOctaves;
@@ -25,11 +33,17 @@ public class Terrain {
         this.z = gridZ * SIZE;
         generator = new PerlinNoiseGenerator(12);
 
-        freq = 50;
-        octaves = 1;
+        scale = 1.0f;
+        prevScale = 1.0f;
 
-        prevFreq = 0.0f;
+        octaves = 1;
         prevOctaves = 0;
+
+        lacunarity = 1.0f;
+        prevLacunarity = 0f;
+
+        persistence = 0.5f;
+        prevPersistence = 0.0f;
     }
 
     public void setTexturedModel(TexturedModel texturedModel) {
@@ -40,14 +54,14 @@ public class Terrain {
         return texturedModel;
     }
 
-    public void incrementFreq() {
-        this.freq += FREQ_CHANGE_AMOUNT;
+    public void incScale() {
+        this.scale += DELTA_SCALE;
     }
 
-    public void decrementFreq() {
-        this.freq -= FREQ_CHANGE_AMOUNT;
-        if (this.freq < 0) {
-            this.freq = 0.0f;
+    public void decScale() {
+        this.scale -= DELTA_SCALE;
+        if (this.scale < 0) {
+            this.scale = 0.0f;
         }
     }
 
@@ -59,6 +73,33 @@ public class Terrain {
         this.octaves--;
         if (this.octaves < 0) {
             this.octaves = 0;
+        }
+    }
+
+    public void incrementLacunarity() {
+        this.lacunarity += LAC_CHANGE_AMOUNT;
+    }
+
+    public void decrementLacunarity() {
+        this.lacunarity -= LAC_CHANGE_AMOUNT;
+
+        if (this.lacunarity < 1) {
+            this.lacunarity = 1.0f;
+        }
+    }
+
+    public void incrementPersistance() {
+        this.persistence += PERSISTANCE_CHANGE_AMOUNT;
+        if (this.persistence > 1.0f) {
+            this.persistence = 1.0f;
+        }
+    }
+
+    public void decrementPersistance() {
+        this.persistence -= PERSISTANCE_CHANGE_AMOUNT;
+
+        if (this.persistence < 0) {
+            this.persistence = 0.01f;
         }
     }
 
@@ -84,15 +125,21 @@ public class Terrain {
                 float z = (float) i / ((float) VERTEX_COUNT - 1) * SIZE;
                 vertices[vertexPointer * 3] = x;
 
-                float yNoise = 0.0f;
-
-                float gain = 1.0f;
+                float maxVal = 0f;
+                float yNoise = 0f;
+                float amplitude = 1.0f;
+                float freq = 1.0f;
                 for (int o = 0; o < octaves; o++) {
-                    yNoise += generator.noise2(gain / freq * x, gain / freq * z) * (1 / gain);
-                    gain *= 2.0f;
+                    float perlin = generator.noise2(x / scale * freq, z / scale * freq) * 2 - 1;
+                    yNoise += perlin * amplitude;
+
+                    maxVal += amplitude;
+
+                    amplitude *= persistence;
+                    freq *= lacunarity;
                 }
 
-                vertices[vertexPointer * 3 + 1] = yNoise;
+                vertices[vertexPointer * 3 + 1] = (yNoise / maxVal);
                 vertices[vertexPointer * 3 + 2] = z;
                 textCoords[vertexPointer * 2] = (float) j / ((float) VERTEX_COUNT - 1);
                 textCoords[vertexPointer * 2 + 1] = (float) i / ((float) VERTEX_COUNT - 1);
@@ -125,14 +172,16 @@ public class Terrain {
     }
 
     public void generateTerrain() {
-        if (freq != prevFreq || octaves != prevOctaves) {
-            System.out.println(String.format("Octaves: %d | Freq: %f", octaves, freq));
+        if (scale != prevScale || octaves != prevOctaves || lacunarity != prevLacunarity || persistence != prevPersistence) {
+            System.out.println(String.format("Octaves: %d | Scale: %f | Lacunarity: %f | Persistance: %f", octaves, scale, lacunarity, persistence));
             generate();
             if (texturedModel != null) {
                 texturedModel.updateModelData(this.model);
             }
-            prevFreq = freq;
+            prevScale = scale;
             prevOctaves = octaves;
+            prevLacunarity = lacunarity;
+            prevPersistence = persistence;
         }
     }
 

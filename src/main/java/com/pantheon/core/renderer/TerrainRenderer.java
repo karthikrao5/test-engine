@@ -9,13 +9,9 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
-import java.nio.IntBuffer;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
@@ -81,27 +77,51 @@ public class TerrainRenderer {
 
     public void update(List<Terrain> terrains) {
         Input input = Input.getInstance();
-        if (input.isKeyPushed(GLFW.GLFW_KEY_F) || input.isKeyPushed(GLFW.GLFW_KEY_F)) {
+        if (input.isKeyPushed(GLFW.GLFW_KEY_F) || input.isKeyHolding(GLFW.GLFW_KEY_F)) {
             for(Terrain terrain : terrains) {
-                terrain.incrementFreq();
+                terrain.incScale();
             }
         }
 
-        if (input.isKeyPushed(GLFW.GLFW_KEY_G) || input.isKeyPushed(GLFW.GLFW_KEY_G)) {
+        if (input.isKeyPushed(GLFW.GLFW_KEY_G) || input.isKeyHolding(GLFW.GLFW_KEY_G)) {
             for(Terrain terrain : terrains) {
-                terrain.decrementFreq();
+                terrain.decScale();
             }
         }
 
-        if (input.isKeyPushed(GLFW.GLFW_KEY_O)  || input.isKeyPushed(GLFW.GLFW_KEY_O)) {
+        if (input.isKeyPushed(GLFW.GLFW_KEY_O)) {
             for(Terrain terrain : terrains) {
                 terrain.incrementOctaves();
             }
         }
 
-        if (input.isKeyPushed(GLFW.GLFW_KEY_P) || input.isKeyPushed(GLFW.GLFW_KEY_P)) {
+        if (input.isKeyPushed(GLFW.GLFW_KEY_P)) {
             for(Terrain terrain : terrains) {
                 terrain.decrementOctaves();
+            }
+        }
+
+        if (input.isKeyPushed(GLFW.GLFW_KEY_K) || input.isKeyHolding(GLFW.GLFW_KEY_K)) {
+            for(Terrain terrain : terrains) {
+                terrain.decrementLacunarity();
+            }
+        }
+
+        if (input.isKeyPushed(GLFW.GLFW_KEY_L) || input.isKeyHolding(GLFW.GLFW_KEY_L)) {
+            for(Terrain terrain : terrains) {
+                terrain.incrementLacunarity();
+            }
+        }
+
+        if (input.isKeyPushed(GLFW.GLFW_KEY_T) || input.isKeyHolding(GLFW.GLFW_KEY_T)) {
+            for(Terrain terrain : terrains) {
+                terrain.decrementPersistance();
+            }
+        }
+
+        if (input.isKeyPushed(GLFW.GLFW_KEY_Y) || input.isKeyHolding(GLFW.GLFW_KEY_Y)) {
+            for(Terrain terrain : terrains) {
+                terrain.incrementPersistance();
             }
         }
     }
