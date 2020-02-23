@@ -12,7 +12,7 @@ public class Terrain {
     private TexturedModel texturedModel;
 
     private PerlinNoiseGenerator generator;
-    private final float FREQ_CHANGE_AMOUNT = 0.01f;
+    private final float FREQ_CHANGE_AMOUNT = 10f;
 
     private float freq;
     private float prevFreq;
@@ -25,7 +25,7 @@ public class Terrain {
         this.z = gridZ * SIZE;
         generator = new PerlinNoiseGenerator(12);
 
-        freq = 0.1f;
+        freq = 50;
         octaves = 1;
 
         prevFreq = 0.0f;
@@ -86,16 +86,14 @@ public class Terrain {
 
                 float yNoise = 0.0f;
 
-                float freqOffset = 1.0f;
+                float gain = 1.0f;
                 for (int o = 0; o < octaves; o++) {
-                    yNoise += generator.noise2(freqOffset * freq * x, freqOffset * freq * z);
-                    freqOffset += 2.0f;
+                    yNoise += generator.noise2(gain / freq * x, gain / freq * z) * (1 / gain);
+                    gain *= 2.0f;
                 }
 
                 vertices[vertexPointer * 3 + 1] = yNoise;
-
                 vertices[vertexPointer * 3 + 2] = z;
-
                 textCoords[vertexPointer * 2] = (float) j / ((float) VERTEX_COUNT - 1);
                 textCoords[vertexPointer * 2 + 1] = (float) i / ((float) VERTEX_COUNT - 1);
                 vertexPointer++;
