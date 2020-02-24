@@ -77,51 +77,41 @@ public class TerrainRenderer {
 
     public void update(List<Terrain> terrains) {
         Input input = Input.getInstance();
-        if (input.isKeyPushed(GLFW.GLFW_KEY_F) || input.isKeyHolding(GLFW.GLFW_KEY_F)) {
-            for(Terrain terrain : terrains) {
+        for (Terrain terrain : terrains) {
+            if (input.isKeyPushed(GLFW.GLFW_KEY_F) || input.isKeyHolding(GLFW.GLFW_KEY_F)) {
                 terrain.incScale();
             }
-        }
 
-        if (input.isKeyPushed(GLFW.GLFW_KEY_G) || input.isKeyHolding(GLFW.GLFW_KEY_G)) {
-            for(Terrain terrain : terrains) {
+            if (input.isKeyPushed(GLFW.GLFW_KEY_G) || input.isKeyHolding(GLFW.GLFW_KEY_G)) {
                 terrain.decScale();
             }
-        }
 
-        if (input.isKeyPushed(GLFW.GLFW_KEY_O)) {
-            for(Terrain terrain : terrains) {
+            if (input.isKeyPushed(GLFW.GLFW_KEY_O)) {
                 terrain.incrementOctaves();
             }
-        }
 
-        if (input.isKeyPushed(GLFW.GLFW_KEY_P)) {
-            for(Terrain terrain : terrains) {
+            if (input.isKeyPushed(GLFW.GLFW_KEY_P)) {
                 terrain.decrementOctaves();
             }
-        }
 
-        if (input.isKeyPushed(GLFW.GLFW_KEY_K) || input.isKeyHolding(GLFW.GLFW_KEY_K)) {
-            for(Terrain terrain : terrains) {
+            if (input.isKeyPushed(GLFW.GLFW_KEY_K)) {
                 terrain.decrementLacunarity();
             }
-        }
 
-        if (input.isKeyPushed(GLFW.GLFW_KEY_L) || input.isKeyHolding(GLFW.GLFW_KEY_L)) {
-            for(Terrain terrain : terrains) {
+            if (input.isKeyPushed(GLFW.GLFW_KEY_L)) {
                 terrain.incrementLacunarity();
             }
-        }
 
-        if (input.isKeyPushed(GLFW.GLFW_KEY_T) || input.isKeyHolding(GLFW.GLFW_KEY_T)) {
-            for(Terrain terrain : terrains) {
+            if (input.isKeyPushed(GLFW.GLFW_KEY_T) || input.isKeyHolding(GLFW.GLFW_KEY_T)) {
                 terrain.decrementPersistance();
             }
-        }
 
-        if (input.isKeyPushed(GLFW.GLFW_KEY_Y) || input.isKeyHolding(GLFW.GLFW_KEY_Y)) {
-            for(Terrain terrain : terrains) {
+            if (input.isKeyPushed(GLFW.GLFW_KEY_Y) || input.isKeyHolding(GLFW.GLFW_KEY_Y)) {
                 terrain.incrementPersistance();
+            }
+
+            if (input.isKeyPushed(GLFW.GLFW_KEY_N)) {
+                terrain.randomSeed();
             }
         }
     }

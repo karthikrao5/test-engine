@@ -2,7 +2,11 @@ package com.pantheon.core.models;
 
 import org.j3d.texture.procedural.PerlinNoiseGenerator;
 
+import java.util.Random;
+
 public class Terrain {
+    private Random rand = new Random();
+
     private int SIZE = 800;
     private int VERTEX_COUNT = 256;
 
@@ -28,10 +32,14 @@ public class Terrain {
     private int octaves;
     private int prevOctaves;
 
+    private int seed;
+    private int prevSeed;
+
     public Terrain(float gridX, float gridZ) {
         this.x = gridX * SIZE;
         this.z = gridZ * SIZE;
-        generator = new PerlinNoiseGenerator(12);
+        
+        this.randomSeed();
 
         scale = 1.0f;
         prevScale = 1.0f;
@@ -71,8 +79,8 @@ public class Terrain {
 
     public void decrementOctaves() {
         this.octaves--;
-        if (this.octaves < 0) {
-            this.octaves = 0;
+        if (this.octaves <= 0) {
+            this.octaves = 1;
         }
     }
 
@@ -101,6 +109,11 @@ public class Terrain {
         if (this.persistence < 0) {
             this.persistence = 0.01f;
         }
+    }
+
+    public void randomSeed() {
+        this.seed = rand.nextInt(10000);
+        this.generator = new PerlinNoiseGenerator(seed);
     }
 
     public float getX() {
@@ -172,7 +185,7 @@ public class Terrain {
     }
 
     public void generateTerrain() {
-        if (scale != prevScale || octaves != prevOctaves || lacunarity != prevLacunarity || persistence != prevPersistence) {
+        if (scale != prevScale || octaves != prevOctaves || lacunarity != prevLacunarity || persistence != prevPersistence || seed != prevSeed) {
             System.out.println(String.format("Octaves: %d | Scale: %f | Lacunarity: %f | Persistance: %f", octaves, scale, lacunarity, persistence));
             generate();
             if (texturedModel != null) {
@@ -182,6 +195,7 @@ public class Terrain {
             prevOctaves = octaves;
             prevLacunarity = lacunarity;
             prevPersistence = persistence;
+            prevSeed = seed;
         }
     }
 
