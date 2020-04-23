@@ -41,7 +41,7 @@ public class Terrain {
         
         this.randomSeed();
 
-        scale = 1.0f;
+        scale = 40.0f;
         prevScale = 1.0f;
 
         octaves = 1;

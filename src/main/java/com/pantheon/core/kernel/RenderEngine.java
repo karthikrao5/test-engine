@@ -30,7 +30,7 @@ public class RenderEngine {
         texturedTerrain.setHeightScale(20f);
         terrain.setTexturedModel(texturedTerrain);
 
-        Terrain terrain2 = new Terrain(-0.5f, -1);
+        Terrain terrain2 = new Terrain(0f, 1f);
         terrain2.generateTerrain();
         TexturedModel texturedTerrain2 = new TexturedModel(terrainTextureId, terrain2.getModel());
         texturedTerrain2.setShineDamper(10f);
@@ -55,7 +55,7 @@ public class RenderEngine {
         terrain4.setTexturedModel(texturedTerrain4);
 
         masterRenderer.processTerrain(terrain);
-//        masterRenderer.processTerrain(terrain2);
+        masterRenderer.processTerrain(terrain2);
 //        masterRenderer.processTerrain(terrain3);
 //        masterRenderer.processTerrain(terrain4);
 
